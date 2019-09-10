@@ -10,16 +10,15 @@
 ## Installation 
 
 ```
-docker pull javert899/pm4py:latest
-docker run -it javert899/pm4py:latest bash
+docker pull andreamalhera/process_mining_mt:latest
+docker run -it process_mining_mt:latest bash
 
 ```
 In the docker container run: 
 ```
 pip install pm4py
-python -c "import pm4py"
+python "test.py"
 
-apt-get install xdg-utils
 ```
 To copy files from host into docker container: 
 ```
