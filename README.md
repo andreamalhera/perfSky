@@ -9,6 +9,9 @@
 
 ## Installation 
 
+### Docker Authentification: 
+Use ` docker login ` to identify yourself. User name is e.g. firstnamelastname.
+Then do: 
 ```
 docker pull andreamalhera/process_mining_mt:latest
 docker run -it process_mining_mt:latest bash
