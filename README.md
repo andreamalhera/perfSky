@@ -10,8 +10,8 @@
 ## Installation 
 
 ```
-docker pull andreamalhera/process_mining_mt:latest
-docker run -it process_mining_mt:latest bash
+docker pull andreamalhera/process_mining_mt:first_tag
+docker run -it -v $PWD/nfs/dockervolume/:/volume andreamaldonado/process_mining_mt:first_tag bash
 
 ```
 In the docker container run: 
