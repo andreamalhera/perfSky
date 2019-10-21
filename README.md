@@ -9,6 +9,9 @@
 
 ## Installation 
 
+### Docker Authentification: 
+Use ` docker login ` to identify yourself. User name is e.g. firstnamelastname.
+Then do: 
 ```
 docker pull andreamalhera/process_mining_mt:first_tag
 docker run -it -v $PWD/nfs/dockervolume/:/volume andreamaldonado/process_mining_mt:first_tag bash
