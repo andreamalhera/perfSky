@@ -4,4 +4,4 @@ services:
     image: processmining_image
     volumes:
      - $HOME/git_tree/processmining:/code
-     - $HOME/nfs/processmining:/code/data
+     - $DATA_PATH:/code/data
