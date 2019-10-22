@@ -8,7 +8,7 @@ install:
 	docker build -t processmining_image -f Dockerfile .
 
 test: install
-	docker-compose run  --rm -w /code processmining bash -c "py.test -vv test.py;\rm -R __pycache__/"
+	docker-compose run  --rm -w /code processmining bash -c "pytest -vv tests/test.py ;\rm -R tests/__pycache__/"
 
 external_test: test
 	cd $(DATA_PATH); \
