@@ -1,7 +1,7 @@
 # LMU Master's Thesis: Process Mining 2019-2020
 
 ## Requirements
-- Python 3
+- Python 3.6
 - Docker and docker-compose
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
