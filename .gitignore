@@ -1,4 +1,2 @@
 envvars.sh
 envvars.mk
-dist/
-processmining.egg-info/
