@@ -1,8 +1,5 @@
 from setuptools import setup
 
-# TODO: Pytest is currently not callable twice with docker-compose 
-# since cache cannot be emptied from outside of the container and 
-# it blocks any build after py.test.
 setup(
         name='processmining',
         version='1.0',

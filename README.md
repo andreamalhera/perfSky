@@ -7,7 +7,7 @@
 
 ## Useful development commands ( stored in makefile ):
 ```
-make build  # build docker base image
+make install  # build docker base image
 make test  # run tests in docker container
 make external_test # runs tests and start small server to see output images
 ```

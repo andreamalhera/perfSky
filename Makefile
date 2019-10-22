@@ -5,10 +5,10 @@ envvars.mk: envvars.sh
 
 install:
 	docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
-	docker build -t processmining_image .
+	docker build -t processmining_image -f Dockerfile .
 
 test: install
-	docker-compose run  --rm -w /code processmining bash -c "python test.py"
+	docker-compose run  --rm -w /code processmining bash -c "py.test -vv test.py;\rm -R __pycache__/"
 
 external_test: test
 	cd $(DATA_PATH); \
