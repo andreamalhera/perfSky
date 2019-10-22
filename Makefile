@@ -9,3 +9,7 @@ install:
 
 test: install
 	docker-compose run  --rm -w /code processmining bash -c "python test.py"
+
+external_test: test
+	cd $(DATA_PATH); \
+	python -m SimpleHTTPServer 8000
