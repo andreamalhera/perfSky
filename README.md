@@ -23,10 +23,26 @@ make external # run the pipeline and start small server to see output images
 	```
 
 
-## Usefil docker commands: 
+## Useful docker commands: 
 - `docker cp /path/to/file container_name:/path/to/file`: To copy files from host into docker container
 - `docker ps -a`: List containers
 - `docker rm $(docker ps -a | grep 'certain_phrase' | awk '{print $1;}')`: Remove containers that match a certain phrase
+- `docker run -it -v $PWD:/code -v $DATA_PATH:/code/data container_name:latest bash`: To experiment inside container
+	Note: The last will take the container as in Docker-Hub some packages might be missing.
+	To update container after intalling additional packages  see 'Update container in Docker Hub'
+
+### Update container in Docker Hub
+```
+docker pull container_name:latest
+docker run -it -v $PWD:/code -v $DATA_PATH:/code/data container_name:latest bash
+
+# Install everything you need here
+
+docker commit container_id container_name # Container_id is whatever comes after 'root@'
+docker tag image_id container_id:tag_name
+docker push container_id
+```
+
 
 ## Important documentation: 
 
