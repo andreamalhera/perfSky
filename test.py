@@ -4,7 +4,7 @@ from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as vis_factory
 
 parameters = {"timestamp_sort": True}
-log = xes_importer.import_log('running-example-just-two-cases.xes')
+log = xes_importer.import_log('./data/dockervolume/running-example-just-two-cases.xes')
 net, initial_marking, final_marking = alpha_miner.apply(log)
 
 for case_index, case in enumerate(log):

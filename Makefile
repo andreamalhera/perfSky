@@ -8,4 +8,4 @@ install:
 	docker build -t processmining_image .
 
 test: install
-	docker-compose run  --rm -w /code processmining bash -c "ls"
+	docker-compose run  --rm -w /code processmining bash -c "python test.py"
