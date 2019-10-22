@@ -9,7 +9,8 @@
 ```
 make install  # build docker base image
 make test  # run tests in docker container
-make external_test # runs tests and start small server to see output images
+make run # run the pipeline in docker container
+make external # run the pipeline and start small server to see output images
 ```
 
 ### To see the images generated on a remote machine: 
