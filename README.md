@@ -6,13 +6,15 @@
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
 ## Useful development commands ( stored in makefile ):
+```
 make build  # build docker base image
 make test  # run all tests inside a docker
+```
 
 ## Usefil docker commands: 
-- To copy files from host into docker container:  `docker cp /path/to/file container_name:/path/to/file`
-- Find the container's name with: `docker ps -a`
-- Remove containers that match a certain phrase: `docker rm $(docker ps -a | grep 'certain_phrase' | awk '{print $1;}')`
+- `docker cp /path/to/file container_name:/path/to/file`: To copy files from host into docker container
+- `docker ps -a`: List containers
+- `docker rm $(docker ps -a | grep 'certain_phrase' | awk '{print $1;}')`: Remove containers that match a certain phrase
 
 ## Important documentation: 
 
