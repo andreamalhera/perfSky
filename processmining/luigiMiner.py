@@ -1,18 +1,26 @@
 import pandas as pd
 
-# TODO: Read and extract interesting information from Luigi Logs
 # TODO: Save that information as csv or xes
 # TODO: Use csv and xes to visualize process
 
 
 def log_to_csv(input_path):
+    df = pd.DataFrame(columns=['timestamp', 'number', 'mode',
+                               'line_in_code', 'message'])
     inputfile = open(input_path, 'r')
     for row in inputfile:
-        print(row)
-        text = row
-    df = pd.DataFrame(columns=[1, 2, 3, 4, 5])
-    m = text.split(',')[0]
-    return m
+        timestamp = row.split(',')[0]
+        rest = row.split(',')[1]
+        number = rest.split(' ')[0]
+        rest = rest.split(' ')[1]
+        mode = rest.split(' ')[0]
+        rest = row.split(mode+'   ')[1]
+        line_in_code = rest.split('  - ')[0]
+        message = rest.split('  - ')[1]
+        df = df.append({'timestamp': timestamp, 'number': number,
+                        'mode': mode, 'line_in_code': line_in_code,
+                        'message': message}, ignore_index=True)
+    return df
 
 
 def run_luigi_alphaminer(log_path, output_path):
