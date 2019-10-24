@@ -11,7 +11,7 @@ lint: install
 	docker-compose run --rm -w /code processmining bash -c "flake8 processmining tests"
 
 test: install
-	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'pytest -vv tests/*'"
+	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'pytest --durations=100 -vv tests/*'"
 
 run: install
 	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'python processmining/run.py'"
