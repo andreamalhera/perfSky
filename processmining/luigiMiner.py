@@ -9,6 +9,7 @@ def file_to_df(inputfile):
     data = pd.DataFrame(columns=['line'])
     for row in inputfile:
         data = data.append({'line': row}, ignore_index=True)
+        print(row)
     return data
 
 
@@ -31,7 +32,7 @@ def data_from_log(input_path):
     return df
 
 
-def run_luigi_alphaminer(log_path, output_path):
+def run_luigi_inductive_miner(log_path, output_path):
     df = data_from_log(log_path)
     csv_path = log_path.split('.log')[0]+'.csv'
     print(csv_path)
