@@ -1,15 +1,12 @@
 import os
-from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as vis_factory
 from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.objects.conversion.log import factory as conversion_factory
 
-
 def run_inductiveminer_example(log_path, output_path):
-    log = xes_importer.import_log(log_path)
     dataframe = csv_import_adapter.import_dataframe_from_path(
-            os.path.join("tests", "input_data", log_path), sep=",")
+            os.path.join("", "", log_path), sep=",")
     log = conversion_factory.apply(dataframe)
 
     net, initial_marking, final_marking = inductive_miner.apply(log)
