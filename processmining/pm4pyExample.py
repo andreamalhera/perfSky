@@ -3,7 +3,7 @@ from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as vis_factory
 
 
-def run_example(log_path, output_path):
+def run_alphaminer_example(log_path, output_path):
     log = xes_importer.import_log(log_path)
     net, initial_marking, final_marking = alpha_miner.apply(log)
 

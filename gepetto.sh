@@ -10,7 +10,7 @@
 
 COMMAND="$1"
 
-set -e .
-python setup.py develop 
+python setup.py develop &&
 $COMMAND
-find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
+find . | grep -E "(__pycache__|\.pyc|\.pyo$|\.egg-info)" | xargs rm -rf
