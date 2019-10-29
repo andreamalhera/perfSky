@@ -7,8 +7,14 @@ import re
 
 def file_to_df(inputfile):
     data = pd.DataFrame(columns=['line'])
-    for row in inputfile:
-        data = data.append({'line': row}, ignore_index=True)
+    lineList = inputfile.readlines()
+    for index, row in enumerate(lineList):
+        if index == 0:
+            data = data.append({'line': row}, ignore_index=True)
+        if '[pid' in row:
+            data = data.append({'line': row}, ignore_index=True)
+        if index >= len(lineList)-3:
+            data = data.append({'line': row}, ignore_index=True)
     return data
 
 
