@@ -17,6 +17,7 @@ def file_to_df(inputfile):
             data = data.append({'line': row}, ignore_index=True)
         if index >= len(lineList)-3:
             data = data.append({'line': row}, ignore_index=True)
+    pd.options.display.max_colwidth = 100
     return data
 
 
@@ -37,7 +38,7 @@ def get_state(row):
 
 
 def get_pid(row):
-    if 'pid' in row['message']:
+    if '[pid' in row['message']:
         return int(row['message'].split('pid ')[1].split('] ')[0])
     return None
 
@@ -61,7 +62,6 @@ def data_from_log(input_path):
     df['pid'] = df.apply(lambda row: get_pid(row), axis=1)
     df['task'] = df.apply(lambda row: get_task(row), axis=1)
     df['state'] = df.apply(lambda row: get_state(row), axis=1)
-    print(df.to_string())
     return df
 
 
