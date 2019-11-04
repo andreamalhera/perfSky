@@ -5,11 +5,14 @@ from luigiMiner import run_luigi_inductive_miner as luigi_miner
 
 start = datetime.datetime.now()
 
-TOY_XES_PATH = './data/pm4pyexample/running-example-just-two-cases.csv'
+TOY_CSV_PATH = './data/pm4pyexample/running-example-just-two-cases.csv'
+TOY_XES_PATH = './data/pm4pyexample/running-example-just-two-cases.xes'
 LUIGI_LOG_PATH = './data/minilogs/daily.2019-09-01_09-29-01.log'
 OUTPUT_PATH = './data/pm4pyexample'
 
-#pm4py_example(TOY_XES_PATH, OUTPUT_PATH+'/just_two_cases')
+pm4py_example(TOY_XES_PATH, OUTPUT_PATH+'/just_two_cases')
+
+# TODO For every file in LUIGI_LOG_PATH+*.log do the following
 luigi_miner(LUIGI_LOG_PATH, OUTPUT_PATH+'/luigi_alphaminer.png')
 
 finish = datetime.datetime.now()
