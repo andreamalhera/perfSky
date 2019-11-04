@@ -3,6 +3,8 @@ import re
 
 # TODO: Save that information as csv or xes
 # TODO: Use csv and xes to visualize process
+# TODO: Use spark for handling big data logs in multiple pipelines
+#       Take a look at sukiyaki's docker-compose.yml
 
 
 def file_to_df(inputfile):
