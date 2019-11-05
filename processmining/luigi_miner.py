@@ -1,7 +1,6 @@
 import pandas as pd
 import re
 
-# TODO: Rename module to luigi preprocesser
 # TODO: Preprocess csv: Get rid of unnecessary info
 # TODO: Visualize process as in boxplot notebook
 # TODO: Expand parameters for every task_call and clean those parameters
