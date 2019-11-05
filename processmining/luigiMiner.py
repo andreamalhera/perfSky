@@ -1,7 +1,10 @@
 import pandas as pd
 import re
 
-# TODO: Use csv and xes to visualize process
+# TODO: Rename module to luigi preprocesser
+# TODO: Preprocess csv: Get rid of unnecessary info
+# TODO: Visualize process as in boxplot notebook
+# TODO: Expand parameters for every task_call and clean those parameters
 # TODO: Use spark for handling big data logs in multiple pipelines
 #       Take a look at sukiyaki's docker-compose.yml
 
