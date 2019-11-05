@@ -4,6 +4,10 @@ from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.conversion.log import factory as conversion_factory
 from pm4py.objects.log.importer.csv import factory as csv_importer
 
+# TODO: Rename this module to inductive miner preprocessor
+# TODO: Preprocess luigi logs
+# TODO: Generate inductive miner visualization for luigi logs
+
 
 def get_log_from_csv(path):
     event_stream = csv_importer.import_event_stream(path,
