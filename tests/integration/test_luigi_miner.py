@@ -10,7 +10,11 @@ def test_file_to_df():
 
 
 def test_data_from_log():
+    EXPECTED_NUM_OF_COLUMNS = 8
+    EXPECTED_NUM_OF_ROWS = 4
     df = data_from_log(LUIGI_LOG_PATH)
-    assert set(['timestamp', 'number', 'mode',
+    assert not df.empty
+    assert df.shape == (EXPECTED_NUM_OF_ROWS, EXPECTED_NUM_OF_COLUMNS)
+    assert set(['timestamp', 'mode',
                 'line_in_code', 'message']).issubset(df.columns)
-    assert df['timestamp'][0] == '2019-09-01 09:29:23'
+    # assert df.isnull().sum()==0
