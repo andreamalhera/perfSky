@@ -44,6 +44,13 @@ def get_pid(row):
     return None
 
 
+def get_message(row):
+    message = re.split(r'py:\d{3}\s+', row['line'])[1]
+    if message.startswith('- '):
+        message = row['line'].split('- ')[1]
+    return message
+
+
 def data_from_log(input_path):
     df = pd.DataFrame(columns=['timestamp', 'number', 'mode',
                                'line_in_code', 'task', 'pid', 'state',
@@ -59,7 +66,7 @@ def data_from_log(input_path):
     df['line_in_code'] = data.apply(lambda row: re.split(r'[A-Z]+\s+',
                                     row['line'])[1].split(' - ')[0],
                                     axis=1)
-    df['message'] = data.apply(lambda row: row['line'].split(' - ')[1], axis=1)
+    df['message'] = data.apply(lambda row: get_message(row), axis=1)
     df['pid'] = df.apply(lambda row: get_pid(row), axis=1)
     df['task'] = df.apply(lambda row: get_task(row), axis=1)
     df['state'] = df.apply(lambda row: get_state(row), axis=1)

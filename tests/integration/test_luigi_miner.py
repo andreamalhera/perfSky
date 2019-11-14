@@ -12,9 +12,11 @@ def test_file_to_df():
 def test_data_from_log():
     EXPECTED_NUM_OF_COLUMNS = 8
     EXPECTED_NUM_OF_ROWS = 4
+    EXPECTED_FIRST_MESSAGE = 'Checking if RootTask('
     df = data_from_log(LUIGI_LOG_PATH)
     assert not df.empty
     assert df.shape == (EXPECTED_NUM_OF_ROWS, EXPECTED_NUM_OF_COLUMNS)
     assert set(['timestamp', 'mode',
                 'line_in_code', 'message']).issubset(df.columns)
+    assert df['message'][0].startswith(EXPECTED_FIRST_MESSAGE)
     # assert df.isnull().sum()==0
