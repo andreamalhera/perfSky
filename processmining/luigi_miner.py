@@ -69,7 +69,7 @@ def data_from_log(input_path):
 def run_luigi_inductive_miner(log_path, output_path):
     df = data_from_log(log_path)
     csv_path = log_path.split('.log')[0]+'.csv'
-    print(csv_path)
+    print('Saved ', csv_path)
     df.to_csv(csv_path)
     df_after = pd.read_csv(csv_path)
-    print("\n"+df_after.to_string())
+    # print("\n"+df_after.to_string())
