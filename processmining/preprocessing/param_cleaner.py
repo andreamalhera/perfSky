@@ -45,3 +45,16 @@ def extract_parameters(task_call):
             #print('A: ', key, value)
             parameters[key] = value
         return parameters
+
+def run_param_cleaner(task_calls):
+    """
+    Returns dataframe containing activity name with only
+    relevant parameters for column 'activity'.
+    Relevant parameters being the ones that are not redundant accross activity names.
+
+    :param task_calls: dataframe containing task_calls. E.g DumpTask( parameter=value)
+    """
+    task_calls['parameters'] = task_calls.apply(lambda row: extract_parameters(row['task_call']), axis=1)
+    expanded_params = pd.concat([task_calls[:], task_calls['parameters'].apply(pd.Series)], axis=1)
+
+    return task_calls

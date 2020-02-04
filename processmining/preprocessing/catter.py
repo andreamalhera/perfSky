@@ -3,6 +3,7 @@ Generate catt's from preprocessed csv, typically from luigi_miner.py
 """
 import numpy as np
 import pandas as pd
+from processmining.preprocessing.param_cleaner import run_param_cleaner
 
 # TODO: Should fail for empty task_calls
 def get_task(task_call):
@@ -56,6 +57,8 @@ def run_catter(df):
 
     merged = merged[['case', 'activity', 'task_call', 'start_time','end_time']].copy()
 
+    # Used to generate test data: merged.to_csv('./tests/data/merged_daily.2019-09-01_09-29-01_head.csv')
 
+    merged['activity'] = run_param_cleaner(merged)['activity']
     catt = merged[['case', 'activity','start_time','end_time']].copy()
     return catt

@@ -1,0 +1,6 @@
+,case,activity,task_call,start_time,end_time
+0,daily.2019-09-01_09-29-01_head,AllTasks,AllTasks,2019-09-01 09:29:23,2019-09-01 09:29:25
+1,daily.2019-09-01_09-29-01_head,GroupTask,"GroupTask(date=2019-09-22_07-40-01, prev_date=2019-09-20_12-49-01, chunk=01, datacenter=eu, inc=False, deploy=False, datastore=mongo)
+",2019-09-23 04:41:43,2019-09-24 03:09:23
+2,daily.2019-09-01_09-29-01_head,GroupTask,"GroupTask(date=2019-09-22_07-40-01, prev_date=2019-09-20_12-49-01, chunk=01, datacenter=eu, inc=False, deploy=False, datastore=mongo)
+",2019-09-24 02:26:21,2019-09-24 03:09:23
