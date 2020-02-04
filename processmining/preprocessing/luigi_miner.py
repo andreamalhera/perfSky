@@ -75,7 +75,7 @@ def get_pid(row):
 
 
 def get_message(row):
-    message = re.split(r'py:\d{3}\s+', row['line'])[1]
+    message = re.split(r'py:\d+\s+', row['line'])[1]
     if message.startswith('- '):
         message = row['line'].split('- ')[1]
     return message

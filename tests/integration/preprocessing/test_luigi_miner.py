@@ -12,7 +12,7 @@ def test_file_to_df():
 
 def test_data_from_log():
     EXPECTED_NUM_OF_COLUMNS = 8
-    EXPECTED_NUM_OF_ROWS = 4
+    EXPECTED_NUM_OF_ROWS = 8
     EXPECTED_FIRST_MESSAGE = 'Checking if RootTask('
     EXPECTED_COLUMNS = ['timestamp', 'task', 'state',
                         'message', 'mode', 'pid',
