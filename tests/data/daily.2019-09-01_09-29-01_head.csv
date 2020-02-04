@@ -1,9 +1,5 @@
-,timestamp,number,mode,line_in_code,task,pid,state,message
-0,2019-09-01 09:29:23,303,DEBUG,worker.py:260 ,,,,"Checking if RootTask(date=2019-09-01_09-29-01, prev_date=2019-08-30_13-45-01, chunk=03) is complete
-"
-1,2019-09-01 09:29:25,205,INFO,worker.py:313 ,,,,"Scheduled ChunkReviewTimelineTask(date=2019-09-01_09-29-01, prev_date=2019-08-30_13-45-01, chunk=02) (PENDING)
-"
-2,2019-09-01 09:29:25,205,DEBUG,worker.py:260 ,,,,"Checking if ReviewDedupTask(date=2019-09-01_09-29-01, prev_date=2019-08-30_13-45-01, chunk=02) is complete
-"
-3,2019-09-01 09:29:25,787,INFO,worker.py:313 ,,,,"
-"
+,timestamp,task,state,source_file
+0,2019-09-01 09:29:23,AllTasks,start,daily.2019-09-01_09-29-01_head
+1,2019-09-01 09:29:25,,,daily.2019-09-01_09-29-01_head
+2,2019-09-01 09:29:25,,,daily.2019-09-01_09-29-01_head
+3,2019-09-01 09:29:25,AllTasks,done,daily.2019-09-01_09-29-01_head

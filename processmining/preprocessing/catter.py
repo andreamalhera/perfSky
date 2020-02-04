@@ -14,6 +14,7 @@ def get_task(task_call):
         return task_call
     return task_call.split('(')[0]
 
+# TODO: Replace 'done' with 'end' for state
 def run_catter(df):
     """
     Generates a 'catt' as output with at least the following columns: 
@@ -32,7 +33,7 @@ def run_catter(df):
 
     df['task_call'] = df['task']
     df['task_name'] = np.where(df['task'].notnull(), df['task'].apply(get_task), df['task'])
-    df = df[['task_name','state','timestamp','task_call', 'source_file']]
+    df = df[['task_name','state','timestamp','task_call', 'source_file']].copy()
 
     df['start_time'] = np.where(df['state']=='start', df['timestamp'], np.nan)
     df['end_time'] = np.where(df['state']=='done', df['timestamp'], np.nan)
