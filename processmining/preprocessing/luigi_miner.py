@@ -101,7 +101,28 @@ def data_from_log(input_path):
     df['state'] = df.apply(lambda row: get_state(row), axis=1)
     return df
 
+# TODO: Add functionality from comment below: 
+'''
+for filename in os.listdir(LUIGI_LOG_PATH):
+if filename.endswith('.csv'):
+log_path = LUIGI_LOG_PATH+'/'+filename
+print('Preprocessing... ', filename)
+df = pd.read_csv(log_path, index_col=0)
+df = df[['timestamp','task','state']]
+df['source_file'] = filename
 
+df['state'][0]='start'
+df['task'][0]='AllTasks'
+
+df['state'][len(df)-1]='done'
+df['task'][len(df)-1]='AllTasks'
+
+appended_df = appended_df.mplete_opened(1)
+oc#idej=ppend(df)
+continue
+else:
+continue
+'''
 def run_luigi_inductive_miner(log_path, output_path):
     df = data_from_log(log_path)
     csv_path = log_path.split('.log')[0]+'.csv'
