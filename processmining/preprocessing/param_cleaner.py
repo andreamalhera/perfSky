@@ -50,12 +50,12 @@ def extract_parameters(task_call):
 
 # TODO: Write unit test
 def get_activity_new_name(old_name, column_key, column_value):
-    if column_key is None:
+    if column_key is None: 
         return old_name
     activity_name = str(old_name)+'('+str(column_key)
-    if column_value is np.nan:
+    if column_value is np.nan: 
         activity_name = activity_name+'=None'
-    else:
+    else: 
         activity_name = activity_name+'='+str(column_value)
     activity_name = activity_name +')'
     return activity_name
@@ -71,7 +71,7 @@ def clean_insignificant_columns(df, drop_candidates):
     flag =0
 
     for group_candidates in drop_candidates:
-        for candidate in (set(group_candidates)-set(WHITELIST)):
+        for candidate in (set(group_candidates)-set(WHITELIST)): 
             group_counts = df.groupby([candidate]).size().reset_index(name='counts').sort_values(by=['counts'])['counts'].tolist()
             #print(group_counts)
             if ('date' in candidate):
@@ -117,7 +117,7 @@ def get_parametrized_activity(df):
         column_selection = set(activity_selection.columns) - set(non_str_columns)
 
         groups_description = pd.DataFrame(columns=['column','different_groups_per_column'])
-        for column in column_selection:
+        for column in column_selection: 
             #print(column,len(clean_activity_selection.groupby([column]).size().reset_index(name='counts').sort_values(by=['counts'])))
             groups_description = groups_description.append([{'column': column, 'different_groups_per_column': len(activity_selection.groupby([column]).size().reset_index(name='counts').sort_values(by=['counts']))}])
         groups_description = groups_description.reset_index()[['column','different_groups_per_column']].sort_values(by=['different_groups_per_column'])
@@ -127,7 +127,7 @@ def get_parametrized_activity(df):
         #print('Similar number of groups with multiple appereances in Groupbys: ', similar_group_counts)
 
         drop_candidates = []
-        for group in similar_group_counts:
+        for group in similar_group_counts: 
             parameters = groups_description[groups_description['different_groups_per_column']==group]['column'].tolist()
             drop_candidates.append(parameters)
         #print('Groups with similar number of groups: ', drop_candidates)
