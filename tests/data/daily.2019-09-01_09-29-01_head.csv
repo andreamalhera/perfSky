@@ -1,3 +1,9 @@
 ,timestamp,task,state,source_file
 0,2019-09-01 09:29:23,AllTasks,start,daily.2019-09-01_09-29-01_head
-3,2019-09-01 09:29:25,AllTasks,done,daily.2019-09-01_09-29-01_head
+1,2019-09-23 04:41:43,"GroupTask(date=2019-09-22_07-40-01, prev_date=2019-09-20_12-49-01, chunk=01, datacenter=eu, inc=False, deploy=False, datastore=mongo)
+",start,daily.2019-09-01_09-29-01_head
+3,2019-09-24 02:26:21,"GroupTask(date=2019-09-22_07-40-01, prev_date=2019-09-20_12-49-01, chunk=01, datacenter=eu, inc=False, deploy=False, datastore=mongo)
+",start,daily.2019-09-01_09-29-01_head
+4,2019-09-24 03:09:23,"GroupTask(date=2019-09-22_07-40-01, prev_date=2019-09-20_12-49-01, chunk=01, datacenter=eu, inc=False, deploy=False, datastore=mongo)
+",done,daily.2019-09-01_09-29-01_head
+7,2019-09-01 09:29:25,AllTasks,done,daily.2019-09-01_09-29-01_head
