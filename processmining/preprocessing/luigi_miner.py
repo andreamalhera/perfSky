@@ -117,6 +117,8 @@ def run_luigi_inductive_miner(log_path, output_path):
     df['state'][len(df)-1]='done'
     df['task'][len(df)-1]='AllTasks'
 
+    df = df.dropna()
+
     csv_path = log_path.split('.log')[0]+'.csv'
     print('Saved ', csv_path)
     df.to_csv(csv_path)

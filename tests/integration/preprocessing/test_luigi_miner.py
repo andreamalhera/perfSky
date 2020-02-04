@@ -23,6 +23,7 @@ def test_data_from_log():
     assert df.shape == (EXPECTED_NUM_OF_ROWS, EXPECTED_NUM_OF_COLUMNS)
     assert set(EXPECTED_COLUMNS) == set(df.columns.tolist())
     assert df['message'][0].startswith(EXPECTED_FIRST_MESSAGE)
+    assert len(open(LUIGI_LOG_PATH).readlines()) >= len(df)
     # assert df.isnull().sum()==0
 
 def test_run_luigi_inductive_miner():
