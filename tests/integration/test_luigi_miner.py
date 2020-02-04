@@ -1,4 +1,4 @@
-from processmining.luigi_miner import data_from_log, file_to_df
+from processmining.preprocessing.luigi_miner import data_from_log, file_to_df
 
 LUIGI_LOG_PATH = './tests/data/daily.2019-09-01_09-29-01_head.log'
 

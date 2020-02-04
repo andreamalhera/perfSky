@@ -1,7 +1,7 @@
 import datetime
 import os
 from pm4pyExample import run_inductiveminer_example as pm4py_example
-from luigi_miner import run_luigi_inductive_miner as luigi_miner
+from preprocessing.luigi_miner import run_luigi_inductive_miner as luigi_miner
 
 
 start = datetime.datetime.now()
