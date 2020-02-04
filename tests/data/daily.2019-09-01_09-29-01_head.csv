@@ -1,5 +1,3 @@
 ,timestamp,task,state,source_file
 0,2019-09-01 09:29:23,AllTasks,start,daily.2019-09-01_09-29-01_head
-1,2019-09-01 09:29:25,,,daily.2019-09-01_09-29-01_head
-2,2019-09-01 09:29:25,,,daily.2019-09-01_09-29-01_head
 3,2019-09-01 09:29:25,AllTasks,done,daily.2019-09-01_09-29-01_head

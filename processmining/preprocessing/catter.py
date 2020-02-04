@@ -2,6 +2,7 @@
 Generate catt's from preprocessed csv, typically from luigi_miner.py
 """
 import numpy as np
+import pandas as pd
 
 # TODO: Should fail for empty task_calls
 def get_task(task_call):
@@ -44,3 +45,17 @@ def run_catter(df):
     end_df = df[df['state']=='done']
     print('End entries: ',len(end_df))
 
+    merged = pd.merge(start_df, end_df, on=['task_call', 'source_file'], how='inner')
+    merged = merged[merged['start_time_x'].notnull()]
+    merged = merged[merged['end_time_y'].notnull()]
+
+    merged['case'] = merged['source_file']
+    merged['activity'] = merged['task_name_x']
+    merged['start_time'] = merged['start_time_x']
+    merged['end_time'] = merged['end_time_y']
+
+    merged = merged[['case', 'activity', 'task_call', 'start_time','end_time']].copy()
+
+
+    catt = merged[['case', 'activity','start_time','end_time']].copy()
+    return catt
