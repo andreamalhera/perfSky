@@ -12,7 +12,6 @@ from processmining.preprocessing.catter import run_catter as catter
 
 
 def run_processmining(luigi_log_path):
-# pm4py_example(TOY_XES_PATH, OUTPUT_PATH+'/just_two_cases')
     files = [file for file in os.listdir(luigi_log_path) if file.endswith('.log')]
     for i, filename in enumerate(files):
         log_path = luigi_log_path+'/'+filename
@@ -32,6 +31,7 @@ if __name__ == "__main__":
 
     TOY_CSV_PATH = './data/pm4pyexample/running-example-just-two-cases.csv'
     TOY_XES_PATH = './data/pm4pyexample/running-example-just-two-cases.xes'
+    #pm4py_example(TOY_XES_PATH, OUTPUT_PATH+'/just_two_cases')
 
 # TODO: Make directory of logs a dynamic argument from make for different pipelines
     PROCESS_NAME='table-precomp' # As in directory where logs are stored

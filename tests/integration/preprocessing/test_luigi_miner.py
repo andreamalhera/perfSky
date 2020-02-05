@@ -1,7 +1,8 @@
 import pandas as pd
 from processmining.preprocessing.luigi_miner import data_from_log, file_to_df, run_luigi_log_miner
 
-LUIGI_LOG_PATH = './tests/data/daily.2019-09-01_09-29-01_head.log'
+# TODO: Move this path to a config file
+LUIGI_LOG_PATH = './tests/data/input_test_luigi_log_miner.log'
 
 
 def test_file_to_df():
