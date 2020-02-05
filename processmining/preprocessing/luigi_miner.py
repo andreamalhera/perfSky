@@ -103,8 +103,7 @@ def data_from_log(input_path):
 
     return df
 
-# TODO: Remove unused parameter 'output_path'
-def run_luigi_log_miner(log_path, output_path):
+def run_luigi_log_miner(log_path):
     print('Preprocessing... ', log_path)
     df = data_from_log(log_path)
     df = df[['timestamp','task','state']]

@@ -1,7 +1,7 @@
 import datetime
 import os
 from pm4pyExample import run_inductiveminer_example as pm4py_example
-from preprocessing.luigi_miner import run_luigi_inductive_miner as luigi_miner
+from preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 
 
 start = datetime.datetime.now()
@@ -16,7 +16,7 @@ files = [file for file in os.listdir(LUIGI_LOG_PATH) if file.endswith('.log')]
 for i, filename in enumerate(files):
     log_path = LUIGI_LOG_PATH+'/'+filename
     print('Preprocessing...', log_path, ' ', i+1, '/', len(files))
-    luigi_miner(log_path, OUTPUT_PATH+'/luigi_alphaminer.png')
+    luigi_miner(log_path)
     continue
 
 finish = datetime.datetime.now()
