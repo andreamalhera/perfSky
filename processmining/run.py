@@ -16,7 +16,7 @@ def run_processmining(luigi_log_path):
     files = [file for file in os.listdir(luigi_log_path) if file.endswith('.log')]
     for i, filename in enumerate(files):
         log_path = luigi_log_path+'/'+filename
-        print('Preprocessing...', log_path, ' ', i+1, '/', len(files))
+        print('\nPreprocessing...', log_path, ' ', i+1, '/', len(files))
         preprocessed = luigi_miner(log_path)
         preprocessed = catter(preprocessed)
 
