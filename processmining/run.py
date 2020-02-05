@@ -24,7 +24,8 @@ files = [file for file in os.listdir(LUIGI_LOG_PATH) if file.endswith('.log')]
 for i, filename in enumerate(files):
     log_path = LUIGI_LOG_PATH+'/'+filename
     print('Preprocessing...', log_path, ' ', i+1, '/', len(files))
-    luigi_miner(log_path)
+    preprocessed = luigi_miner(log_path)
+
     continue
 
 finish = datetime.datetime.now()
