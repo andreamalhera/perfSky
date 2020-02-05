@@ -1,5 +1,8 @@
 import datetime
 import os
+import pandas as pd 
+
+from difflib import SequenceMatcher
 from processmining.pm4pyExample import run_inductiveminer_example as pm4py_example
 from processmining.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 from processmining.preprocessing.catter import run_catter as catter
@@ -10,21 +13,42 @@ from processmining.preprocessing.catter import run_catter as catter
 # FUDO: Use spark for handling big data logs in multiple pipelines
 #       Take a look at sukiyaki's docker-compose.yml
 
+# TODO: Not only for 2 strings but list of string
+def longestSubstring(str1,str2):
+
+     # initialize SequenceMatcher object with
+     # input string 
+     seqMatch = SequenceMatcher(None,str1,str2)
+
+     # find match of longest sub-string
+     # output will be like Match(a=0, b=0, size=5)
+     match = seqMatch.find_longest_match(0, len(str1), 0, len(str2)) 
+
+     # print longest substring
+     if (match.size!=0):
+          result = str1[match.a: match.a + match.size]
+          print (result)
+          return result
+     else:
+          print ('No longest common sub-string found')
+
 
 def run_processmining(luigi_log_path):
+    appended_preprocessed = pd.DataFrame()
     files = [file for file in os.listdir(luigi_log_path) if file.endswith('.log')]
+
     for i, filename in enumerate(files):
         log_path = luigi_log_path+'/'+filename
         print('\nPreprocessing...', log_path, ' ', i+1, '/', len(files))
         preprocessed = luigi_miner(log_path)
         preprocessed = catter(preprocessed)
-
-        csv_path = log_path.split('.log')[0]+'.csv'
-        preprocessed.to_csv(csv_path)
-
-        print('Saved ', csv_path)
-
+        appended_preprocessed = appended_preprocessed.append(preprocessed)
         continue
+
+    process_name = longestSubstring(files[0].split('.log')[0],files[-1].split('.log')[0])
+    csv_path = luigi_log_path+'/'+str(process_name)+'.csv'
+    appended_preprocessed.to_csv(csv_path)
+    print('Saved ', csv_path)
 
 if __name__ == "__main__":
     start = datetime.datetime.now()
