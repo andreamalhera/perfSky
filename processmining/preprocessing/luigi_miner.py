@@ -96,7 +96,6 @@ def data_from_log(input_path):
 
     return df
 
-# TODO: Drop irrelevant columns before of saving them to csv
 # TODO: Preprocess csv: Get rid of unnecessary info
 def run_luigi_log_miner(log_path):
     print('Preprocessing... ', log_path)
