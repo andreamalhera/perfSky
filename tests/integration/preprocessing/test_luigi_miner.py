@@ -1,5 +1,5 @@
 import pandas as pd
-from processmining.preprocessing.luigi_miner import data_from_log, file_to_df, run_luigi_inductive_miner
+from processmining.preprocessing.luigi_miner import data_from_log, file_to_df, run_luigi_log_miner
 
 LUIGI_LOG_PATH = './tests/data/daily.2019-09-01_09-29-01_head.log'
 
@@ -26,6 +26,6 @@ def test_data_from_log():
     assert len(open(LUIGI_LOG_PATH).readlines()) >= len(df)
     # assert df.isnull().sum()==0
 
-def test_run_luigi_inductive_miner():
-    run_luigi_inductive_miner(LUIGI_LOG_PATH, '')
+def test_run_luigi_log_miner():
+    run_luigi_log_miner(LUIGI_LOG_PATH, '')
     assert not pd.read_csv(LUIGI_LOG_PATH.split('.log')[0]+'.csv').empty
