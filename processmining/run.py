@@ -5,6 +5,8 @@ from preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 
 # TODO: Visualize process as in boxplot notebook
 # TODO: Expand parameters for every task_call and clean those parameters
+# FUDO: Use spark for handling big data logs in multiple pipelines
+#       Take a look at sukiyaki's docker-compose.yml
 
 start = datetime.datetime.now()
 
