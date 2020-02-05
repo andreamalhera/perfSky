@@ -26,8 +26,6 @@ def test_data_from_log():
     assert len(open(LUIGI_LOG_PATH).readlines()) >= len(df)
     # assert df.isnull().sum()==0
 
-# TODO: Test other stuff than if file is getting written
 def test_run_luigi_log_miner():
     result = run_luigi_log_miner(LUIGI_LOG_PATH)
     assert not result.empty
-    assert not pd.read_csv(LUIGI_LOG_PATH.split('.log')[0]+'.csv').empty

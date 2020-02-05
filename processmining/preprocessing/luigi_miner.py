@@ -113,11 +113,4 @@ def run_luigi_log_miner(log_path):
     df['task'][len(df)-1]='AllTasks'
 
     df = df.dropna()
-
-# TODO: Move saving files to run. I would like for submodules only to handle dataframes
-    csv_path = log_path.split('.log')[0]+'.csv'
-    print('Saved ', csv_path)
-    df.to_csv(csv_path)
-    df_after = pd.read_csv(csv_path)
-    # print("\n"+df_after.to_string())
     return df

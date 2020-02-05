@@ -26,6 +26,10 @@ for i, filename in enumerate(files):
     print('Preprocessing...', log_path, ' ', i+1, '/', len(files))
     preprocessed = luigi_miner(log_path)
 
+    csv_path = log_path.split('.log')[0]+'.csv'
+    preprocessed.to_csv(csv_path)
+    print('Saved ', csv_path)
+
     continue
 
 finish = datetime.datetime.now()
