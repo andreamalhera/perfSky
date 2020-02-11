@@ -48,6 +48,7 @@ def plot_newline(p1, p2):
     return l
 
 def draw_traces(data_selection, ax, draw_skylines=None):
+    unique_trace = data_selection['case'].unique().tolist()
     colormapt = cm.gist_ncar
     trace_colorlist = [colors.rgb2hex(colormapt(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
     trace_legend = dict(zip(unique_trace, trace_colorlist))
