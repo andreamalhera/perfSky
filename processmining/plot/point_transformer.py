@@ -12,6 +12,8 @@ import random
 
 from collections import OrderedDict
 
+# TODO: Move all drawing helper functions to own file.
+
 def get_color_from_label(label, color):
     return color
 
