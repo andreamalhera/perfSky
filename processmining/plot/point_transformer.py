@@ -228,8 +228,10 @@ def get_duration(start_time, end_time):
     return duration
 #get_duration(ex['timestamp'][10],ex['timestamp'][1])
 
+
 def get_relative_timestamps(df, exclude_tasks=[]):
     relatived = df.copy()
+
     #print('First timestamp in dataframe ', df['start_time'].min())
     #print('Last timestamp in dataframe ',df['end_time'].max())
     grouped = df.groupby(['case'])
@@ -358,7 +360,7 @@ def plot_point_transformer_selection(subset, output_path_prefix):
     print(len(unique_trace), ' cases')
     #print(unique_trace, '\n')
 
-    snippet = get_relative_timestamps(subset)
+    snippet = get_relative_timestamps(subset, ['AllTasks'])
 
     outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
     #print(outputpath_seltr)
