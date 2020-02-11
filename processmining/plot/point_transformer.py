@@ -10,6 +10,8 @@ import numpy as np
 import sys
 import random
 
+from collections import OrderedDict
+
 def get_color_from_label(label, color):
     return color
 
@@ -78,7 +80,14 @@ def draw_allen_lines(allen_point, ax, yax, duration_plot=None):
                 ax.plot([0,x],[x,x],'k-', c='grey', linewidth=1, linestyle='--')
                 ax.plot([0,y],[y,y],'k-', c='grey', linewidth=1, linestyle='--')
 
-def plot_point_transformer(title, data_selection, activity=None, traces=None,  allen_point=None, size=None, duration_plot=None, draw_skylines=None, output_path=None):
+def sort_dict(d):
+    items = [[k, v] for k, v in sorted(d.items(), key=lambda x: x[0])]
+    for item in items:
+        if isinstance(item[1], dict):
+            item[1] = sort_dict(item[1])
+    return OrderedDict(items)
+
+def plot_point_transformer(title, data_selection, activity=None, traces=None,  allen_point=None, size=None, duration_plot=None, draw_skylines=None, output_path=None, plot_show=None):
     fig, ax = plt.subplots()
 
     if size:
@@ -143,6 +152,7 @@ def plot_point_transformer(title, data_selection, activity=None, traces=None,  a
 
     handles, labels = plt.gca().get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
+    by_label = sort_dict(by_label)
 
     plt.legend(by_label.values(), by_label.keys(), loc='center left', bbox_to_anchor=(1, 0.5))
     #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
