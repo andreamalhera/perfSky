@@ -195,6 +195,7 @@ def get_data_selection_avgtrace(df):
 
 def get_skyline_points(df):
     #skyline = pd.DataFrame(columns=['x','y'])
+    df = df.reset_index()
     df.sort_values(by=['num_start'])
     max_x = []
     max_y = []
@@ -364,19 +365,19 @@ def plot_point_transformer_selection(subset, output_path_prefix):
 
     outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
     #print(outputpath_seltr)
-    #plot_selected_traces(snippet, output_path=outputpath_seltr)
+    plot_selected_traces(snippet, output_path=outputpath_seltr)
 
     output_path_atr = output_path_prefix+'point_transformer_allTraces'+'.png'
     #print(output_path_atr)
-   # plot_all_traces(snippet, output_path=output_path_atr)
+    plot_all_traces(snippet, output_path=output_path_atr)
 
     output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline'+'.png'
     #print(output_path_atr)
-    #plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1)
+    plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1)
 
     output_path_avtr = output_path_prefix+'point_transformer_averageTrace'+'.png'
     #print(output_path_avtr)
-    #plot_average_trace(snippet, output_path=output_path_avtr)
+    plot_average_trace(snippet, output_path=output_path_avtr)
 
     output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
     #print(output_path_avtr)
@@ -384,7 +385,7 @@ def plot_point_transformer_selection(subset, output_path_prefix):
 
     output_path_sa = output_path_prefix+'point_transformer_selectedAct'+'.png'
     #print(output_path_sa)
-    #plot_selected_activities(snippet, output_path=output_path_sa)
+    plot_selected_activities(snippet, output_path=output_path_sa)
 
     w_duration = snippet.copy()
     w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1)
@@ -398,11 +399,11 @@ def plot_point_transformer_selection(subset, output_path_prefix):
 
     output_path_st_duration = output_path_prefix+'point_transformer_duration_selectedTraces'+'.png'
     #print(output_path_st_duration)
-    #plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration)
+    plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration)
 
     output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
     #print(output_path_duration)
-    #plot_duration_alltraces(w_duration, output_path=output_path_duration)
+    plot_duration_alltraces(w_duration, output_path=output_path_duration)
 
     return snippet
 
