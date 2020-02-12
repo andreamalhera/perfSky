@@ -3,7 +3,7 @@ import os
 import pandas as pd 
 
 from difflib import SequenceMatcher
-from processmining.pm4pyExample import run_inductiveminer_example as pm4py_example
+#from processmining.pm4pyExample import run_inductiveminer_example as pm4py_example
 from processmining.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 from processmining.preprocessing.catter import run_catter as catter
 

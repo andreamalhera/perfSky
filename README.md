@@ -5,6 +5,19 @@
 - Docker and docker-compose
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
+## For experimenting on jupyter notebooks:
+```
+conda create -n processmining_venv python=3
+conda activate processmining_venv
+
+#install requirements
+pip install -r requirements.txt
+jupyter lab --port=9000 # To tunnel to local machine add: --no-browser &
+
+# In local machine (only in case you are tunneling): 
+ssh -N -f -L 8888:localhost:9003 <user@remote_machine.com>
+```
+
 ## Useful development commands ( stored in makefile ):
 ```
 make install  # build docker base image
