@@ -214,23 +214,25 @@ def get_data_selection_avgtrace(df):
     return average_trace
 
 def get_skyline_points(df):
-    #skyline = pd.DataFrame(columns=['x','y'])
     df = df.reset_index()
     df.sort_values(by=['num_start'])
-    max_x = []
-    max_y = []
-    activity = []
-    case = []
-    for i, e in enumerate(df['num_start']):
-        maxi = max(df['num_start'][0:i+1].values.tolist())
-        mayi = max(df['num_end'][0:i+1].values.tolist())
-        if maxi in df[df['num_end']==mayi]['num_start'].values:
-            max_x.append(maxi)
-            max_y.append(mayi)
-            activity.append(df['activity'][i])
-            case.append(df['case'][i])
-
-    skyline = pd.DataFrame({'num_start':max_x, 'num_end':max_y, 'activity': activity, 'case': case})
+    skyline = pd.DataFrame()
+    for unique_case in df['case'].unique():
+        max_x = []
+        max_y = []
+        activity = []
+        case = []
+        iter_case = df[df['case']==unique_case]
+        for i in range(len(iter_case)):
+            maxi = max(iter_case['num_start'][0:i+1].values.tolist())
+            mayi = max(iter_case['num_end'][0:i+1].values.tolist())
+            #print(e, maxi, mayi)
+            if maxi in iter_case[iter_case['num_end']==mayi]['num_start'].values:
+                max_x.append(maxi)
+                max_y.append(mayi)
+                activity.append(iter_case['activity'].iloc[i])
+                case.append(iter_case['case'].iloc[i])
+        skyline = pd.concat([skyline, pd.DataFrame({'num_start':max_x, 'num_end':max_y, 'activity': activity, 'case': case})])
     skyline = skyline.drop_duplicates().reset_index()[['num_start','num_end','activity','case']]
 
     return skyline
