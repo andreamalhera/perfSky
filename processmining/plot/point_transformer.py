@@ -376,7 +376,7 @@ def plot_duration_alltraces(w_duration, output_path=None, show_plot=None):
         figurept = plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                 traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
-def plot_point_transformer_selection(subset, output_path_prefix):
+def plot_point_transformer_selection(subset, output_path_prefix, show_plot=None):
     activity = subset['activity'].apply(lambda row: row.split('(',1)[0]).unique().tolist()
     #filename_addition = title_from_list(activity)
     filename_addition = ''
@@ -396,32 +396,32 @@ def plot_point_transformer_selection(subset, output_path_prefix):
 
     outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
     #print(outputpath_seltr)
-    plot_selected_traces(snippet, output_path=outputpath_seltr)
+    plot_selected_traces(snippet, output_path=outputpath_seltr, show_plot=show_plot)
 
     output_path_atr = output_path_prefix+'point_transformer_allTraces'+'.png'
     #print(output_path_atr)
-    plot_all_traces(snippet, output_path=output_path_atr)
+    plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
 
     output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline'+'.png'
     #print(output_path_atr)
-    plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1)
+    plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
 
     output_path_avtr = output_path_prefix+'point_transformer_averageTrace'+'.png'
     #print(output_path_avtr)
-    plot_average_trace(snippet, output_path=output_path_avtr)
+    plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
 
     output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
     #print(output_path_avtr)
-    plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1)
+    plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
 
     output_path_sa = output_path_prefix+'point_transformer_selectedAct'+'.png'
     #print(output_path_sa)
     plot_selected_activities(snippet, output_path=output_path_sa)
 
     w_duration = snippet.copy()
-    w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1)
+    w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1, show_plot=show_plot)
     w_duration['rel_end']=w_duration['duration']
-    w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1)
+    w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1, show_plot=show_plot)
     w_duration['num_end']=w_duration['t_duration']
     w_duration = w_duration[['case','activity','rel_start','num_start', 'rel_end', 'num_end']]
 
@@ -430,11 +430,11 @@ def plot_point_transformer_selection(subset, output_path_prefix):
 
     output_path_st_duration = output_path_prefix+'point_transformer_duration_selectedTraces'+'.png'
     #print(output_path_st_duration)
-    plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration)
+    plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
     output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
     #print(output_path_duration)
-    plot_duration_alltraces(w_duration, output_path=output_path_duration)
+    plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
     return snippet
 
