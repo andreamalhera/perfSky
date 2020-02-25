@@ -205,7 +205,7 @@ def get_average_times(group):
     return group
 
 def get_data_selection_avgtrace(df):
-    average_trace = df[['case','activity','rel_start','rel_end','num_start','num_end']].iloc[: , :]
+    average_trace = df[['case','activity','num_start','num_end']].iloc[: , :]
     average_trace = average_trace.groupby(['activity'])
     average_trace = average_trace.apply(get_average_times)
     average_trace = average_trace.drop_duplicates('activity', keep='first').reset_index()
