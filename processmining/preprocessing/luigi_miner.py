@@ -47,9 +47,9 @@ def file_to_df(inputfile):
 
 def get_task(row):
     if ' running' in row['message']:
-        return re.split(r'running\s+', row['message'])[1]
+        return re.split(r'running\s*', row['message'])[1]
     if ' done' in row['message']:
-        return re.split(r'done\s+', row['message'])[1]
+        return re.split(r'done\s*', row['message'])[1]
     return None
 
 
