@@ -31,19 +31,19 @@ The following notebooks contain prototypes of parts also implemented in the code
 - [logsToCatts.ipynb](notebooks/logsToCatts.ipynb)
 - [toyExampleToCatts.ipynb](notebooks/toyExampleToCatts.ipynb)
 - [pointTransformer.ipynb](notebooks/pointTransformer.ipynb)
-And a final one which is use for experiments with the performance skyline  in new logs, specifically for anomaly detection:
-- [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): 
+- [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection 
 
 The code is divided in two main modules, [preprocessing](processmining/preprocessing) and [plot](processmining/plot). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
 The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
 
 
-## Requirements
+## Installation:
+### Requirements
 - Python 3.6
 - Docker and docker-compose
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
-## For experimenting on jupyter notebooks:
+### For experimenting on jupyter notebooks:
 ```
 conda create -n performance-skyline_venv python=3
 conda activate performance-skyline_venv
@@ -56,7 +56,7 @@ jupyter lab --port=9000 # To tunnel to local machine add: --no-browser &
 ssh -N -f -L 8888:localhost:9003 <user@remote_machine.com>
 ```
 
-## Useful development commands ( stored in makefile ):
+### Useful development commands ( stored in makefile ):
 ```
 make install  # build docker base image
 make test  # run tests in docker container
@@ -64,6 +64,11 @@ make run # run the pipeline in docker container
 make external # run the pipeline and start small server to see output images
 ```
 
+### Usage from '.log's to performance skyline exploration plots: 
+To run this pipeline in other luigi logs follow these steps: 
+- To preprocess logs, specify the `PROCESS_NAME`, `LUIGI_LOG_PATH` and `OUTPUT_PATH` in [run.py](processmining/run.py)
+- `make run` to convert logs into single `.csv` file containing preprocessed trace set with interval events.
+- Specify location of trace set `.csv` in [performance_skyline_anomalies](notebooks/performance_skyline_anomalies.ipybn) notebook and run it.
 ### To see the images generated on a remote machine: 
 - On remote machine: `make external test`
 - On the local machine:
