@@ -13,8 +13,30 @@ experiments on real event logs show that presented models assist detecting and c
 anomalies into multiple categories.
 
 ## Presentation Slides
-* [Performance Skyline Presentation](https://github.com/andreamalhera/processmining/blob/master/master_thesis/Inferring_Process_Performance%20Models%20from_Interval_Events_using_the_Performance_Skyline.pdf)
-* [Performance Skyline Master's Thesis](https://github.com/andreamalhera/processmining/blob/master/master_thesis/Performance_Skyline_Andrea_Maldonado.pdf)
+* [Performance Skyline Presentation](master_thesis/Inferring_Process_Performance%20Models%20from_Interval_Events_using_the_Performance_Skyline.pdf)
+* [Performance Skyline Master's Thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf)
+
+## Structure
+This directory contains:
+- [Dockerfile]() and [docker-compose.yml](): Describe set-up for docker container to run this pipeline
+- [gepetto.sh](): Installs package inside docker container.
+- [Makefile](): Defines commands to run with this pipeline
+- [envvars_sample.sh](): Sample to fill in environmental variables to run this pipeline
+- [requirements.txt](): Specifies necessary requirements to run in conda environment
+- [setup.py](): Specifies package out of this project
+
+Directories are divided into [master thesis content](master_thesis/), [jupyter notebooks](notebooks/), [tests](tests/), [data used for experiments](data/) and runable [code](processmining/).
+The following notebooks contain prototypes of parts also implemented in the code: 
+- [boxplot.ipynb](notebooks/boxplot.ipynb)
+- [logsToCatts.ipynb](notebooks/logsToCatts.ipynb)
+- [toyExampleToCatts.ipynb](notebooks/toyExampleToCatts.ipynb)
+- [pointTransformer.ipynb](notebooks/pointTransformer.ipynb)
+And a final one which is use for experiments with the performance skyline  in new logs, specifically for anomaly detection:
+- [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): 
+
+The code is divided in two main modules, [preprocessing](processmining/preprocessing) and [plot](processmining/plot). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
+The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
+
 
 ## Requirements
 - Python 3.6
@@ -23,8 +45,8 @@ anomalies into multiple categories.
 
 ## For experimenting on jupyter notebooks:
 ```
-conda create -n processmining_venv python=3
-conda activate processmining_venv
+conda create -n performance-skyline_venv python=3
+conda activate performance-skyline_venv
 
 #install requirements
 pip install -r requirements.txt
@@ -73,7 +95,7 @@ docker push container_id
 ```
 
 
-## Important documentation: 
+## Important sources: 
 
 - http://pm4py.org/
 - https://www.scalyr.com/blog/create-docker-image/
