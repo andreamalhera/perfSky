@@ -135,19 +135,19 @@ def plot_point_transformer(title, data_selection, activity=None, traces=None,  a
     if not duration_plot:
         #Draw diagonal
         plot_newline([0,0],[max(xax,yax),max(xax,yax)])
-        ax.set_ylabel('End time [mins]')
+        ax.set_ylabel('End time')
     else:
-        ax.set_ylabel('Duration [seconds]')
+        ax.set_ylabel('Duration')
 
     if traces:
         draw_traces(data_selection, ax, draw_skylines=draw_skylines)
 
-    if not allen_point is None :# Weird if statement because of maybe empty object or dataframe
-        draw_allen_lines(allen_point, ax, yax, duration_plot=duration_plot)
+#    if not allen_point is None :# Weird if statement because of maybe empty object or dataframe
+#        draw_allen_lines(allen_point, ax, yax, duration_plot=duration_plot)
 
     ax.legend()
 
-    ax.set_xlabel('Start time [mins]')
+    ax.set_xlabel('Start time')
 
     xlocs, labels = plt.xticks()
     ylocs, labels = plt.yticks()
@@ -202,6 +202,7 @@ def get_average_times(group):
     group['average_end'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_end'])))
     group['num_start'] = avg_datetime(group['num_start'])
     group['num_end'] = avg_datetime(group['num_end'])
+    group['std_num_end'] = group['num_end'].std()
     return group
 
 def get_data_selection_avgtrace(df):
@@ -210,7 +211,7 @@ def get_data_selection_avgtrace(df):
     average_trace = average_trace.apply(get_average_times)
     average_trace = average_trace.drop_duplicates('activity', keep='first').reset_index()
     average_trace['case'] = 'Average Case'
-    average_trace = average_trace[['activity','average_start', 'average_end','num_start','num_end', 'case']].sort_values(by=['num_start'])
+    average_trace = average_trace[['activity','average_start', 'average_end','num_start','num_end', 'case', 'std_num_end']].sort_values(by=['num_start'])
     return average_trace
 
 def get_skyline_points(df):
@@ -317,6 +318,7 @@ def plot_all_traces(snippet, output_path=None, draw_skylines=None, show_plot=Non
     else:
         figurept = plot_point_transformer('Point transformer: All activities in all traces.', snippet, traces=traces_selection,
                 size=1 , draw_skylines=1, output_path=output_path, show_plot=show_plot)
+    return figurept
 
 def plot_average_trace(snippet, output_path = None, draw_skylines=None, show_plot=None):
     #FIXME: Average End and start are only taking hours:minutes and not days into account
@@ -335,6 +337,7 @@ def plot_average_trace(snippet, output_path = None, draw_skylines=None, show_plo
         figurept = plot_point_transformer('Point transformer: Average trace from all activities', 
                                           data_selection, traces=traces_selection, size=1, output_path=output_path,
                                           draw_skylines=draw_skylines, show_plot=show_plot)
+    return figurept
 
 def plot_selected_activities(snippet, output_path = None, show_plot = None):
     #TODO: Adapt frame dynamically
