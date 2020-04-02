@@ -158,10 +158,10 @@ def plot_point_transformer(title, data_selection, activity=None, traces=None,  a
     by_label = dict(zip(labels, handles))
     by_label = sort_dict(by_label)
 
-    if len(by_label)>50:
-        plt.legend(by_label.values(), by_label.keys(), loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
-    else:
-        plt.legend(by_label.values(), by_label.keys(), loc='center left', bbox_to_anchor=(1, 0.5))
+    #if len(by_label)>50:
+    #    plt.legend(by_label.values(), by_label.keys(), loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
+    #else:
+    plt.legend(by_label.values(), by_label.keys(), loc='center left', bbox_to_anchor=(1, 0.5))
 
     #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.title(multiline_text(title, 175))
