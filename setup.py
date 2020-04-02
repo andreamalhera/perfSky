@@ -7,5 +7,5 @@ setup(
         author = 'Andrea Maldonado',
         author_email='andrea.maldonado@trustyou.net',
         packages=find_packages(),
-        install_requires=['pytest', 'py4pm', 'flake8']
+        install_requires=['pytest', 'py4pm', 'flake8', 'pyspark']
         )
