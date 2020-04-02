@@ -64,11 +64,12 @@ make run # run the pipeline in docker container
 make external # run the pipeline and start small server to see output images
 ```
 
-### Usage from '.log's to performance skyline exploration plots: 
+## Usage from '.log's to performance skyline exploration plots: 
 To run this pipeline in other luigi logs follow these steps: 
 - To preprocess logs, specify the `PROCESS_NAME`, `LUIGI_LOG_PATH` and `OUTPUT_PATH` in [run.py](processmining/run.py)
 - `make run` to convert logs into single `.csv` file containing preprocessed trace set with interval events.
 - Specify location of trace set `.csv` in [performance_skyline_anomalies](notebooks/performance_skyline_anomalies.ipybn) notebook and run it.
+
 ### To see the images generated on a remote machine: 
 - On remote machine: `make external test`
 - On the local machine:
