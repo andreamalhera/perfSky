@@ -18,4 +18,14 @@ run: install
 
 external: run
 	cd $(DATA_PATH); \
-	python -m SimpleHTTPServer 8000
+	python -m http.server 8000
+
+server: install
+	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'python print('Hello docker')'"
+	cd $(DATA_PATH); \
+	python -m http.server 8000
+
+jupyter:
+	cd $(NOTEBOOKS_PATH) &
+	lsof -ti:9000 | xargs kill -9 &
+	jupyter notebook  --port=9000 --no-browser &
