@@ -14,7 +14,7 @@ anomalies into multiple categories.
 
 ## Presentation Slides
 * [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
-* [Performance Skyline Master's Thesis](master_thesis/written_composition_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
+* [Performance Skyline Master's Thesis](https://github.com/andreamalhera/performanceskyline_private/blob/master/master_thesis/written_composition_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
 
 ## Structure
 This directory contains:
