@@ -3,5 +3,5 @@ services:
   processmining:
     image: processmining_image
     volumes:
-     - $HOME/git_tree/processmining:/code
+     - $HOME/git_tree/performanceskyline:/code
      - $DATA_PATH:/code/data
