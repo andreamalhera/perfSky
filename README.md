@@ -13,8 +13,8 @@ experiments on real event logs show that presented models assist detecting and c
 anomalies into multiple categories.
 
 ## Presentation Slides
-* [Performance Skyline Presentation](master_thesis/Inferring_Process_Performance%20Models%20from_Interval_Events_using_the_Performance_Skyline.pdf)
-* [Performance Skyline Master's Thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf)
+* [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
+* [Performance Skyline Master's Thesis](master_thesis/written_composition_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
 
 ## Structure
 This directory contains:
