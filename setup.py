@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-        name='processmining',
-        version='1.0',
-        description='LMU Master Thesis: Process Mining 2019-2020',
+        name='perSky',
+        version='0.1.0',
+        description='Performance Skyline python package to visualize event logs (from process mining) performance',
         author = 'Andrea Maldonado',
-        author_email='andrea.maldonado@trustyou.net',
+        author_email='andreamalher.works@gmail.com',
         packages=find_packages(),
         install_requires=['pytest', 'py4pm', 'flake8', 'pyspark']
         )
