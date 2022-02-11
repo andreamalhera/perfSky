@@ -6,8 +6,8 @@ setup(
         description = 'Performance Skyline python package to visualize event logs (from process mining) performance',
         author = 'Andrea Maldonado',
         author_email = 'andreamalher.works@gmail.com',
-        license = 'MIT'
-        url='https://github.com/andreamalhera/performanceskyline.git'
+        license = 'MIT',
+        url='https://github.com/andreamalhera/performanceskyline.git',
         install_requires=[
             'pytest',
             'py4pm'
