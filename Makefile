@@ -8,24 +8,20 @@ install:
 	docker build -t processmining_image -f Dockerfile .
 
 lint: install
-	docker-compose run --rm -w /code processmining bash -c "flake8 processmining tests"
+	flake8 perfSky tests
 
 test: install
-	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'pytest --durations=100 -vv tests/unit/* tests/integration/*'"
+	python setup.py develop && pytest --durations=100 -vv tests/unit/* tests/integration/*
 
 run: install
-	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'python processmining/run.py'"
+	python setup.py develop && python perfSky/run.py
 
 external: run
 	cd $(DATA_PATH); \
 	python -m http.server 8000
 
-server: install
-	docker-compose run --rm -w /code processmining bash -c "./gepetto.sh 'python print('Hello docker')'"
-	cd $(DATA_PATH); \
-	python -m http.server 8000
 
 jupyter:
 	cd $(NOTEBOOKS_PATH) &&\
-lsof -ti:9000 | xargs kill -9 &&\
-jupyter notebook  --port=9000 --no-browser &
+	lsof -ti:9000 | xargs kill -9 &&\
+	jupyter notebook  --port=9000 --no-browser &
