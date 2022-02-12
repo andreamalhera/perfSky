@@ -3,7 +3,7 @@ Generate catt's from preprocessed csv, typically from luigi_miner.py
 """
 import numpy as np
 import pandas as pd
-from processmining.preprocessing.param_cleaner import run_param_cleaner
+from perfSky.preprocessing.param_cleaner import run_param_cleaner
 
 # TODO: Should fail for empty task_calls
 def get_task(task_call):

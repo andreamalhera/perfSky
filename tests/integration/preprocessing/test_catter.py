@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from processmining.preprocessing.catter import run_catter
+from perfSky.preprocessing.catter import run_catter
 
 # TODO: Move this path to a config file
 LUIGI_LOG_PATH = './tests/data/input_test_catter.csv'

@@ -1,5 +1,5 @@
 import pandas as pd
-from processmining.preprocessing.luigi_miner import data_from_log, file_to_df, run_luigi_log_miner
+from perfSky.preprocessing.luigi_miner import data_from_log, file_to_df, run_luigi_log_miner
 
 # TODO: Move this path to a config file
 LUIGI_LOG_PATH = './tests/data/input_test_luigi_log_miner.log'

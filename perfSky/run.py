@@ -3,9 +3,9 @@ import os
 import pandas as pd 
 
 from difflib import SequenceMatcher
-#from processmining.pm4pyExample import run_inductiveminer_example as pm4py_example
-from processmining.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
-from processmining.preprocessing.catter import run_catter as catter
+#from perfSky.pm4pyExample import run_inductiveminer_example as pm4py_example
+from perfSky.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
+from perfSky.preprocessing.catter import run_catter as catter
 
 # TODO: Move whole thing to self calling function so it can be tested
 # TODO: Visualize process as in boxplot notebook

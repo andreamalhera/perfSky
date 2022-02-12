@@ -1,4 +1,4 @@
-from processmining.run import run_processmining, longestSubstring
+from perfSky.run import run_processmining, longestSubstring
 import pandas as pd
 import os
 

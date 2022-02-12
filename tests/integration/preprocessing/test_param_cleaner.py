@@ -1,5 +1,5 @@
 import pandas as pd
-from processmining.preprocessing.param_cleaner import run_param_cleaner
+from perfSky.preprocessing.param_cleaner import run_param_cleaner
 
 # TODO: Move this path to a config file
 LUIGI_LOG_PATH = './tests/data/input_test_param_cleaner.csv'

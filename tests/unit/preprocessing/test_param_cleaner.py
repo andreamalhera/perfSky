@@ -1,4 +1,4 @@
-from processmining.preprocessing.param_cleaner import extract_parameters
+from perfSky.preprocessing.param_cleaner import extract_parameters
 
 def test_extract_parameters():
     test_input = "DumpTask(date=2019-09-04_23-23-01, "\

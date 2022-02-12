@@ -1,4 +1,4 @@
-from processmining.preprocessing.catter import get_task
+from perfSky.preprocessing.catter import get_task
 
 
 def test_get_task():
