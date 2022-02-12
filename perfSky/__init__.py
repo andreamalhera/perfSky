@@ -8,4 +8,4 @@ __version__ = "0.1.0"
 __author__ = 'Andrea Maldonado'
 __credits__='Ludwig Maximilian University Munich'
 
-from perfSky.Plotter import Plot
+from perfSky.Visualizer import Vis

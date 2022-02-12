@@ -33,7 +33,7 @@ The following notebooks contain prototypes of parts also implemented in the code
 - [pointTransformer.ipynb](notebooks/pointTransformer.ipynb)
 - [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection 
 
-The code is divided in two main modules, [preprocessing](perfSky/preprocessing) and [Plotter](perfSky/Plotter.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
+The code is divided in two main modules, [preprocessing](perfSky/preprocessing) and [Visualizer](perfSky/Visualizer.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
 The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
 
 

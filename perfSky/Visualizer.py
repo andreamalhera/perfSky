@@ -12,7 +12,7 @@ import random
 
 from collections import OrderedDict
 
-class Plot:
+class Vis:
     # TODO: Move all drawing helper functions to own file.
     # TODO: TESTME: Write tests for this module
 
