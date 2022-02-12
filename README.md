@@ -1,4 +1,6 @@
-# LMU Master's Thesis: Inferring Process Performance Models from Interval Events using the Performance Skyline
+# The Performance Skyline
+* Infers Process Performance Models from Interval Events as part of LMU Master's Thesis and soon to be published paper at [SA4PM@ICPM20](http://sa4pm.win.tue.nl/)
+* is the basis for MAD (Multilevel Anomaly Detection using the performance skyline) 
 
 ## Abstract
 Performance mining from event logs is a central element to manage and improve business processes.
@@ -12,9 +14,9 @@ extensions for further process discovery, conformance checking and process enhan
 experiments on real event logs show that presented models assist detecting and classifying trace
 anomalies into multiple categories.
 
-## Presentation Slides
+## Presentation slides and master thesis
 * [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
-* [Performance Skyline Master's Thesis](https://github.com/andreamalhera/performanceskyline_private/blob/master/master_thesis/written_composition_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
+* [Performance Skyline Master's Thesis](master_thesis/written_composition_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
 
 ## Structure
 This directory contains:
@@ -25,7 +27,7 @@ This directory contains:
 - [requirements.txt](): Specifies necessary requirements to run in conda environment
 - [setup.py](): Specifies package out of this project
 
-Directories are divided into [master thesis content](master_thesis/), [jupyter notebooks](notebooks/), [tests](tests/), [data used for experiments](data/) and runable [code](processmining/).
+Directories are divided into [master thesis content](master_thesis/), [jupyter notebooks](notebooks/), [tests](tests/), [data used for experiments](data/) and runable [code](perfSky/).
 The following notebooks contain prototypes of parts also implemented in the code: 
 - [boxplot.ipynb](notebooks/boxplot.ipynb)
 - [logsToCatts.ipynb](notebooks/logsToCatts.ipynb)
