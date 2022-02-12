@@ -33,7 +33,7 @@ The following notebooks contain prototypes of parts also implemented in the code
 - [pointTransformer.ipynb](notebooks/pointTransformer.ipynb)
 - [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection 
 
-The code is divided in two main modules, [preprocessing](processmining/preprocessing) and [plot](processmining/plot). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
+The code is divided in two main modules, [preprocessing](perfSky/preprocessing) and [Plotter](perfSky/Plotter.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
 The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
 
 
@@ -46,8 +46,8 @@ The plots module contains visualization methods to project traces from an interv
 
 ### For experimenting on jupyter notebooks:
 ```
-conda create -n performance-skyline_venv python=3
-conda activate performance-skyline_venv
+conda create -n perfSky_venv python=3
+conda activate perfSky_venv
 
 #install requirements
 pip install -r requirements.txt
@@ -67,7 +67,7 @@ make external # run the pipeline and start small server to see output images
 
 ## Usage from '.log's to performance skyline exploration plots: 
 To run this pipeline in other luigi logs follow these steps: 
-- To preprocess logs, specify the `PROCESS_NAME`, `LUIGI_LOG_PATH` and `OUTPUT_PATH` in [run.py](processmining/run.py)
+- To preprocess logs, specify the `PROCESS_NAME`, `LUIGI_LOG_PATH` and `OUTPUT_PATH` in [run.py](perfSky/run.py)
 - `make run` to convert logs into single `.csv` file containing preprocessed trace set with interval events.
 - Specify location of trace set `.csv` in [performance_skyline_anomalies](notebooks/performance_skyline_anomalies.ipybn) notebook and run it.
 
