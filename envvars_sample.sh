@@ -4,3 +4,4 @@
 export DOCKER_USERNAME=''
 export DOCKER_PASSWORD=''
 export DATA_PATH=''
+export NOTEBOOKS_PATH='notebooks/'

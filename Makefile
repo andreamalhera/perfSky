@@ -26,6 +26,6 @@ server: install
 	python -m http.server 8000
 
 jupyter:
-	cd $(NOTEBOOKS_PATH) &
-	lsof -ti:9000 | xargs kill -9 &
-	jupyter notebook  --port=9000 --no-browser &
+	cd $(NOTEBOOKS_PATH) &&\
+lsof -ti:9000 | xargs kill -9 &&\
+jupyter notebook  --port=9000 --no-browser &
