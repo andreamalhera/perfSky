@@ -33,7 +33,7 @@ def longestSubstring(str1,str2):
           print ('No longest common sub-string found')
 
 
-def run_processmining(luigi_log_path):
+def run_preprocessing(luigi_log_path):
     appended_preprocessed = pd.DataFrame()
     files = [file for file in os.listdir(luigi_log_path) if file.endswith('.log')]
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     LUIGI_LOG_PATH = './data/minilogs/'+PROCESS_NAME+'/logs/october/mongo'
     OUTPUT_PATH = './data/minilogs/'+PROCESS_NAME+'/graphs'
 
-    run_processmining(LUIGI_LOG_PATH)
+    run_preprocessing(LUIGI_LOG_PATH)
 
     finish = datetime.datetime.now()
     print('Running whole pipeline took: ',finish-start)
