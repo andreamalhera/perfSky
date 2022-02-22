@@ -238,9 +238,8 @@ class Vis:
         skyline = skyline.drop_duplicates().reset_index()[['num_start','num_end','activity','case']]
 
         return skyline
-
-#first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
-#get_skyline_points(first_case).head()
+        #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
+        #get_skyline_points(first_case).head()
 
     def get_zero_points(group):
         group['zero_point'] = group['start_time'].min()
@@ -251,7 +250,7 @@ class Vis:
         end = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
         duration = abs(end - start)
         return duration
-#get_duration(ex['timestamp'][10],ex['timestamp'][1])
+        #get_duration(ex['timestamp'][10],ex['timestamp'][1])
 
 
     def get_relative_timestamps(df, exclude_tasks=[]):
