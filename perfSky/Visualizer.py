@@ -254,6 +254,7 @@ class Vis:
 
 
     def get_relative_timestamps(df, exclude_tasks=[]):
+        #WIP for failing test: relatived['zero_points']=relatived['start_time'].groupby(relatived['case']).transform('min')
         relatived = df.copy()
 
         #print('First timestamp in dataframe ', df['start_time'].min())
