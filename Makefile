@@ -4,8 +4,8 @@ envvars.mk: envvars.sh
 	sed 's/"//g ; s/=/:=/' < $< > $@
 
 install:
-	docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
-	docker build -t processmining_image -f Dockerfile .
+	pip install -r requirements.txt
+	pip install .
 
 lint: install
 	flake8 perfSky tests

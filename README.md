@@ -20,8 +20,6 @@ anomalies into multiple categories.
 
 ## Structure
 This directory contains:
-- [Dockerfile]() and [docker-compose.yml](): Describe set-up for docker container to run this pipeline
-- [gepetto.sh](): Installs package inside docker container.
 - [Makefile](): Defines commands to run with this pipeline
 - [envvars_sample.sh](): Sample to fill in environmental variables to run this pipeline
 - [requirements.txt](): Specifies necessary requirements to run in conda environment
@@ -42,8 +40,6 @@ The plots module contains visualization methods to project traces from an interv
 ## Installation:
 ### Requirements
 - Python 3.6
-- Anaconda
-- Docker and docker-compose
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
 ### For experimenting on jupyter notebooks:
@@ -61,9 +57,9 @@ ssh -N -f -L 8888:localhost:9003 <user@remote_machine.com>
 
 ### Useful development commands ( stored in makefile ):
 ```
-make install  # build docker base image
-make test  # run tests in docker container
-make run # run the pipeline in docker container
+make install  # install as pip package in conda enviroment
+make test  # run tests with pytest
+make run # run the pipeline
 make external # run the pipeline and start small server to see output images
 ```
 
@@ -81,28 +77,6 @@ To run this pipeline in other luigi logs follow these steps:
 	ssh -N -f -L 8888:localhost:8000 <user@remote_machine.com>
 	open "http://localhost:8888/"
 	```
-
-
-## Useful docker commands: 
-- `docker cp /path/to/file container_name:/path/to/file`: To copy files from host into docker container
-- `docker ps -a`: List containers
-- `docker rm $(docker ps -a | grep 'certain_phrase' | awk '{print $1;}')`: Remove containers that match a certain phrase
-- `docker run -it -v $PWD:/code -v $DATA_PATH:/code/data container_name:latest bash`: To experiment inside container
-	Note: The last will take the container as in Docker-Hub some packages might be missing.
-	To update container after intalling additional packages  see 'Update container in Docker Hub'
-
-### Update container in Docker Hub
-```
-docker pull container_name:latest
-docker run -it -v $PWD:/code -v $DATA_PATH:/code/data container_name:latest bash
-
-# Install everything you need here
-
-docker commit container_id container_name # Container_id is whatever comes after 'root@'
-docker tag image_id container_id:tag_name
-docker push container_id
-```
-
 
 ## Important sources: 
 
