@@ -81,5 +81,3 @@ To run this pipeline in other luigi logs follow these steps:
 ## Important sources: 
 
 - http://pm4py.org/
-- https://www.scalyr.com/blog/create-docker-image/
-- http://www.processmining.org/event_logs_and_models_used_in_book
