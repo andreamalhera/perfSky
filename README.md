@@ -8,7 +8,7 @@ Established performance analysis techniques are either based on control-flow mod
 all possible execution paths for a process at once, or methods that propose extracting performance
 features from only one timestamp. This thesis integrates interval-based methods from sequence pattern
 mining into process mining to discover performance process models from event logs that include both,
-start and end event timestamps. In addition it introduces the \textit{performance skyline}, which
+start and end event timestamps. In addition it introduces the _performance skyline_, which
 describes the series of events that lead to the worst case duration of a process and  enables novel
 extensions for further process discovery, conformance checking and process enhancement. Executed
 experiments on real event logs show that presented models assist detecting and classifying trace
