@@ -51,7 +51,7 @@ class Vis:
             c = trace_legend.get(l)
 
             if draw_skylines:
-                skyline = get_skyline_points(current)
+                skyline = self.get_skyline_points(current)
                 ax.plot(skyline['num_start'], skyline['num_end'], label='skyline '+k, zorder=0, color=c)
             else:
                 ax.plot(current['num_start'], current['num_end'], label='trace '+k, zorder=0, color=c)
@@ -218,7 +218,7 @@ class Vis:
         average_trace = average_trace[['activity','average_start', 'average_end','num_start','num_end', 'case', 'std_num_end']].sort_values(by=['num_start'])
         return average_trace
 
-    def get_skyline_points(df):
+    def get_skyline_points(self, df):
         df = df.reset_index()
         df.sort_values(by=['num_start'])
         skyline = pd.DataFrame()
@@ -243,12 +243,6 @@ class Vis:
         return skyline
         #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
         #get_skyline_points(first_case).head()
-
-    #def get_zero_points(group):
-    #    group['zero_point'] = group['start_time'].min()
-    #    return group
-    def test():
-        print("Yes!")
 
     def get_duration(self, start_time, end_time):
         start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
