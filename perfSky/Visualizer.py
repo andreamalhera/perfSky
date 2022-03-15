@@ -19,26 +19,13 @@ class Vis:
     def get_color_from_label(label, color):
         return color
 
-    def multiline_text(text, max_in_line):
-        many_lines = []
-        result=''
-        i=0
-        while len(text)>max_in_line and i==0:
-            many_lines.append(text[0:max_in_line+1])
-            text = text[max_in_line+1:]
-        if len(text):
-            many_lines.append(text)
-        for item in many_lines:
-            result += item + '\n'
-        return result
-
     def title_from_list(act_selection):
         result=''
         for act in act_selection:
             result+=act+'_'
         return result
 
-    def plot_newline(p1, p2):
+    def plot_newline(self, p1, p2):
         ax = plt.gca()
         xmin, xmax = ax.get_xbound()
 
@@ -53,7 +40,7 @@ class Vis:
         ax.add_line(l)
         return l
 
-    def draw_traces(data_selection, ax, draw_skylines=None):
+    def draw_traces(self, data_selection, ax, draw_skylines=None):
         unique_trace = data_selection['case'].unique().tolist()
         colormapt = cm.gist_ncar
         trace_colorlist = [colors.rgb2hex(colormapt(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
@@ -84,15 +71,38 @@ class Vis:
                     ax.plot([0,x],[x,x],'k-', c='grey', linewidth=1, linestyle='--')
                     ax.plot([0,y],[y,y],'k-', c='grey', linewidth=1, linestyle='--')
 
-    def sort_dict(d):
-        items = [[k, v] for k, v in sorted(d.items(), key=lambda x: x[0])]
-        for item in items:
-            if isinstance(item[1], dict):
-                item[1] = sort_dict(item[1])
-        return OrderedDict(items)
-
-    def plot_point_transformer(title, data_selection, activity=None, traces=None,  allen_point=None, size=None,
+    def plot_point_transformer(self, title, data_selection, activity=None, traces=None,  allen_point=None, size=None,
             duration_plot=None, draw_skylines=None, output_path=None, show_plot=None):
+
+        def get_time_list_from_seconds(list):
+            result = []
+            for item in list:
+                if item < 0:
+                    result.append('')
+                else:
+                    result.append(datetime.timedelta(seconds=item))
+            return result
+
+        def sort_dict(d):
+            items = [[k, v] for k, v in sorted(d.items(), key=lambda x: x[0])]
+            for item in items:
+                if isinstance(item[1], dict):
+                    item[1] = sort_dict(item[1])
+            return OrderedDict(items)
+
+        def multiline_text(text, max_in_line):
+            many_lines = []
+            result=''
+            i=0
+            while len(text)>max_in_line and i==0:
+                many_lines.append(text[0:max_in_line+1])
+                text = text[max_in_line+1:]
+            if len(text):
+                many_lines.append(text)
+            for item in many_lines:
+                result += item + '\n'
+            return result
+
         fig, ax = plt.subplots()
 
         if size:
@@ -135,13 +145,13 @@ class Vis:
 
         if not duration_plot:
             #Draw diagonal
-            plot_newline([0,0],[max(xax,yax),max(xax,yax)])
+            self.plot_newline([0,0],[max(xax,yax),max(xax,yax)])
             ax.set_ylabel('End time')
         else:
             ax.set_ylabel('Duration')
 
         if traces:
-            draw_traces(data_selection, ax, draw_skylines=draw_skylines)
+            self.draw_traces(data_selection, ax, draw_skylines=draw_skylines)
 
 #    if not allen_point is None :# Weird if statement because of maybe empty object or dataframe
 #        draw_allen_lines(allen_point, ax, yax, duration_plot=duration_plot)
@@ -184,29 +194,22 @@ class Vis:
         return duration
 #get_duration(ex['timestamp'][10],ex['timestamp'][1])
 
-    def get_time_list_from_seconds(list):
-        result = []
-        for item in list:
-            if item < 0:
-                result.append('')
-            else:
-                result.append(datetime.timedelta(seconds=item))
-        return result
+    def get_data_selection_avgtrace(self, df):
 
-    def avg_datetime(series):
-        averages = (series.sum())/len(series)
-        #averages = time.strftime('%H:%M:%S', time.gmtime(averages))
-        return averages
+        def get_average_times(group):
 
-    def get_average_times(group):
-        group['average_start'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_start'])))
-        group['average_end'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_end'])))
-        group['num_start'] = avg_datetime(group['num_start'])
-        group['num_end'] = avg_datetime(group['num_end'])
-        group['std_num_end'] = group['num_end'].std()
-        return group
+            def avg_datetime(series):
+                averages = (series.sum())/len(series)
+                #averages = time.strftime('%H:%M:%S', time.gmtime(averages))
+                return averages
 
-    def get_data_selection_avgtrace(df):
+            group['average_start'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_start'])))
+            group['average_end'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_end'])))
+            group['num_start'] = avg_datetime(group['num_start'])
+            group['num_end'] = avg_datetime(group['num_end'])
+            group['std_num_end'] = group['num_end'].std()
+            return group
+
         average_trace = df[['case','activity','num_start','num_end']].iloc[: , :]
         average_trace = average_trace.groupby(['activity'])
         average_trace = average_trace.apply(get_average_times)
@@ -241,11 +244,13 @@ class Vis:
         #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
         #get_skyline_points(first_case).head()
 
-    def get_zero_points(group):
-        group['zero_point'] = group['start_time'].min()
-        return group
+    #def get_zero_points(group):
+    #    group['zero_point'] = group['start_time'].min()
+    #    return group
+    def test():
+        print("Yes!")
 
-    def get_duration(start_time, end_time):
+    def get_duration(self, start_time, end_time):
         start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         end = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
         duration = abs(end - start)
@@ -253,7 +258,11 @@ class Vis:
         #get_duration(ex['timestamp'][10],ex['timestamp'][1])
 
 
-    def get_relative_timestamps(df, exclude_tasks=[]):
+    def get_relative_timestamps(self, df, exclude_tasks=[]):
+        def get_zero_points(group):
+            group['zero_point'] = group['start_time'].min()
+            return group
+
         #WIP for failing test: relatived['zero_points']=relatived['start_time'].groupby(relatived['case']).transform('min')
         relatived = df.copy()
 
@@ -268,11 +277,11 @@ class Vis:
         #print('Merged relatived:', len(relatived), 'columns', relatived.columns.tolist())
 
         excluding = exclude_tasks
-        relatived['rel_start'] = relatived.apply(lambda row: 
-                                            str(get_duration(str(row['zero_point']),
+        relatived['rel_start'] = relatived.apply(lambda row:
+                                            str(self.get_duration(str(row['zero_point']),
                                                                 str(row['start_time']))), axis=1)
-        relatived['rel_end'] = relatived.apply(lambda row: 
-                                            str(get_duration(str(row['zero_point']),
+        relatived['rel_end'] = relatived.apply(lambda row:
+                                            str(self.get_duration(str(row['zero_point']),
                                                                 str(row['end_time']))), axis=1)
 
         relatived['num_start']= list(pd.to_timedelta(relatived['rel_start'], errors="coerce").dt.total_seconds ())
@@ -307,17 +316,17 @@ class Vis:
                                             data_selection, size=1, traces=traces_selection, output_path=output_path, show_plot=show_plot)
         #print(data_selection[['activity','rel_start','rel_end']])
 
-    def plot_all_traces(snippet, output_path=None, draw_skylines=None, show_plot=None):
+    def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None):
         traces_selection = snippet['case'].drop_duplicates().tolist()
         #print(point)
         if len(snippet[snippet['num_start']>0])>0:
             point = snippet[snippet['num_start']>0].sample(n=1)
             #point = snippet.iloc[ 1 , : ].to_frame().transpose()
-            figurept = plot_point_transformer('Point transformer: All activities in all traces. Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values), snippet, allen_point=point,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces. Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values), snippet, allen_point=point,
                     traces=traces_selection,  size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = plot_point_transformer('Point transformer: All activities in all traces.', snippet, traces=traces_selection,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces.', snippet, traces=traces_selection,
                     size=1 , draw_skylines=1, output_path=output_path, show_plot=show_plot)
         return figurept
 
