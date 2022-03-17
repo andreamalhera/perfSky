@@ -1,8 +1,4 @@
 # The Performance Skyline
-* Infers Process Performance Models from Interval Events as part of LMU Master's Thesis and soon to be published paper at [SA4PM@ICPM20](http://sa4pm.win.tue.nl/)
-* is the basis for MAD (Multilevel Anomaly Detection using the performance skyline) 
-
-## Abstract
 Performance mining from event logs is a central element to manage and improve business processes.
 Established performance analysis techniques are either based on control-flow models, which simulate
 all possible execution paths for a process at once, or methods that propose extracting performance
@@ -13,6 +9,10 @@ describes the series of events that lead to the worst case duration of a process
 extensions for further process discovery, conformance checking and process enhancement. Executed
 experiments on real event logs show that presented models assist detecting and classifying trace
 anomalies into multiple categories.
+
+If you'd like to learn more about how it works, see References below.
+
+Brought to you by [Andrea Maldonado](andreamalher.works@gmail.com)
 
 ## Presentation slides and master thesis
 * [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
@@ -37,9 +37,9 @@ The code is divided in two main modules, [preprocessing](perfSky/preprocessing) 
 The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
 
 
-## Installation:
-### Requirements
-- Python 3.6
+## Installation
+### Requirements:
+- Python 3.6+
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
 ### For experimenting on jupyter notebooks:
@@ -63,7 +63,7 @@ make run # run the pipeline
 make external # run the pipeline and start small server to see output images
 ```
 
-## Usage from '.log's to performance skyline exploration plots: 
+## Usage from '.log's to performance skyline exploration plots 
 To run this pipeline in other luigi logs follow these steps: 
 - To preprocess logs, specify the `PROCESS_NAME`, `LUIGI_LOG_PATH` and `OUTPUT_PATH` in [run.py](perfSky/run.py)
 - `make run` to convert logs into single `.csv` file containing preprocessed trace set with interval events.
@@ -78,6 +78,9 @@ To run this pipeline in other luigi logs follow these steps:
 	open "http://localhost:8888/"
 	```
 
-## Important sources: 
+## References
+The algorithm used by `perfSky` is taken directly from the original paper by Maldonado, Sontheim, Richter and Seidl. If you would like to discuss the paper, or corresponding research questions on temporal process mining (we have implemented a few other algorithms as well) please email the authors.
+
+### Important sources
 
 - http://pm4py.org/
