@@ -37,9 +37,9 @@ The code is divided in two main modules, [preprocessing](perfSky/preprocessing) 
 The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
 
 
-## Installation:
-### Requirements
-- Python 3.6
+## Installation
+### Requirements:
+- Python 3.6+
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
 ### For experimenting on jupyter notebooks:
@@ -63,7 +63,7 @@ make run # run the pipeline
 make external # run the pipeline and start small server to see output images
 ```
 
-## Usage from '.log's to performance skyline exploration plots: 
+## Usage from '.log's to performance skyline exploration plots 
 To run this pipeline in other luigi logs follow these steps: 
 - To preprocess logs, specify the `PROCESS_NAME`, `LUIGI_LOG_PATH` and `OUTPUT_PATH` in [run.py](perfSky/run.py)
 - `make run` to convert logs into single `.csv` file containing preprocessed trace set with interval events.
@@ -78,9 +78,9 @@ To run this pipeline in other luigi logs follow these steps:
 	open "http://localhost:8888/"
 	```
 
-## Important sources: 
-
-- http://pm4py.org/
-
 ## References
 The algorithm used by `perfSky` is taken directly from the original paper by Maldonado, Sontheim, Richter and Seidl. If you would like to discuss the paper, or corresponding research questions on temporal process mining (we have implemented a few other algorithms as well) please email the authors.
+
+### Important sources
+
+- http://pm4py.org/
