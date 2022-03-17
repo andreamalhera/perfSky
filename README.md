@@ -10,7 +10,7 @@ extensions for further process discovery, conformance checking and process enhan
 experiments on real event logs show that presented models assist detecting and classifying trace
 anomalies into multiple categories.
 
-f you'd like to learn more about how it works, see References below.
+If you'd like to learn more about how it works, see References below.
 
 Brought to you by [Andrea Maldonado](andreamalher.works@gmail.com)
 
