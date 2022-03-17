@@ -1,8 +1,4 @@
 # The Performance Skyline
-* Infers Process Performance Models from Interval Events as part of LMU Master's Thesis and soon to be published paper at [SA4PM@ICPM20](http://sa4pm.win.tue.nl/)
-* is the basis for MAD (Multilevel Anomaly Detection using the performance skyline) 
-
-## Abstract
 Performance mining from event logs is a central element to manage and improve business processes.
 Established performance analysis techniques are either based on control-flow models, which simulate
 all possible execution paths for a process at once, or methods that propose extracting performance
@@ -13,6 +9,10 @@ describes the series of events that lead to the worst case duration of a process
 extensions for further process discovery, conformance checking and process enhancement. Executed
 experiments on real event logs show that presented models assist detecting and classifying trace
 anomalies into multiple categories.
+
+f you'd like to learn more about how it works, see References below.
+
+Brought to you by [Andrea Maldonado](andreamalher.works@gmail.com)
 
 ## Presentation slides and master thesis
 * [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
@@ -81,3 +81,6 @@ To run this pipeline in other luigi logs follow these steps:
 ## Important sources: 
 
 - http://pm4py.org/
+
+## References
+The algorithm used by `perfSky` is taken directly from the original paper by Maldonado, Sontheim, Richter and Seidl. If you would like to discuss the paper, or corresponding research questions on temporal process mining (we have implemented a few other algorithms as well) please email the authors.
