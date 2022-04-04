@@ -13,7 +13,7 @@ setup(
             'py4pm',
             'flake8'    #Tool for coding style guide enforcement
             ],
-        packages = ['perfSky']
+        packages = ['perfSky'],
         classifiers=[
             'Development Status :: 3 - Alpha',      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
             'Intended Audience :: Science/Research',      # Define that your audience are developers
