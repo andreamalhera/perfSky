@@ -39,6 +39,7 @@ The plots module contains visualization methods to project traces from an interv
 
 ## Installation
 ### Requirements:
+- (Miniconda)[https://docs.conda.io/en/latest/miniconda.html]
 - Python 3.6+
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
