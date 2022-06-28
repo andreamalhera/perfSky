@@ -253,6 +253,9 @@ class Vis:
 
 
     def get_relative_timestamps(self, df, exclude_tasks=[]):
+        """
+        Adds columns 'rel_start', 'rel_end', 'num_start', 'num_end', relative to the first start and end timestamps per case to the first start and end timestamps per case..
+        """
         def get_zero_points(group):
             group['zero_point'] = group['start_time'].min()
             return group
