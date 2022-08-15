@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import datetime
-import time
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.colors as colors
@@ -11,7 +10,7 @@ import sys
 import random
 
 from collections import OrderedDict
-from perfSky.Skyline import get_relative_timestamps
+from perfSky.Skyline import get_relative_timestamps, get_duration, get_data_selection_avgtrace, get_skyline_points
 
 class Vis:
     # TODO: Move all drawing helper functions to own file.
@@ -52,7 +51,7 @@ class Vis:
             c = trace_legend.get(l)
 
             if draw_skylines:
-                skyline = self.get_skyline_points(current)
+                skyline = get_skyline_points(current)
                 ax.plot(skyline['num_start'], skyline['num_end'], label='skyline '+k, zorder=0, color=c)
             else:
                 ax.plot(current['num_start'], current['num_end'], label='trace '+k, zorder=0, color=c)
@@ -186,64 +185,6 @@ class Vis:
             plt.show()
         plt.close(fig)
         return fig
-
-
-    def get_duration(start_time, end_time):
-        start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        end = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
-        duration = abs(end - start)
-        return duration
-#get_duration(ex['timestamp'][10],ex['timestamp'][1])
-
-    def get_data_selection_avgtrace(self, df):
-
-        def get_average_times(group):
-
-            def avg_datetime(series):
-                averages = (series.sum())/len(series)
-                #averages = time.strftime('%H:%M:%S', time.gmtime(averages))
-                return averages
-
-            group['average_start'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_start'])))
-            group['average_end'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_end'])))
-            group['num_start'] = avg_datetime(group['num_start'])
-            group['num_end'] = avg_datetime(group['num_end'])
-            group['std_num_end'] = group['num_end'].std()
-            return group
-
-        average_trace = df[['case','activity','num_start','num_end']].iloc[: , :]
-        average_trace = average_trace.groupby(['activity'])
-        average_trace = average_trace.apply(get_average_times)
-        average_trace = average_trace.drop_duplicates('activity', keep='first').reset_index()
-        average_trace['case'] = 'Average Case'
-        average_trace = average_trace[['activity','average_start', 'average_end','num_start','num_end', 'case', 'std_num_end']].sort_values(by=['num_start'])
-        return average_trace
-
-    def get_skyline_points(self, df):
-        df = df.reset_index()
-        df.sort_values(by=['num_start'])
-        skyline = pd.DataFrame()
-        for unique_case in df['case'].unique():
-            max_x = []
-            max_y = []
-            activity = []
-            case = []
-            iter_case = df[df['case']==unique_case]
-            for i in range(len(iter_case)):
-                maxi = max(iter_case['num_start'][0:i+1].values.tolist())
-                mayi = max(iter_case['num_end'][0:i+1].values.tolist())
-                #print(e, maxi, mayi)
-                if maxi in iter_case[iter_case['num_end']==mayi]['num_start'].values:
-                    max_x.append(maxi)
-                    max_y.append(mayi)
-                    activity.append(iter_case['activity'].iloc[i])
-                    case.append(iter_case['case'].iloc[i])
-            skyline = pd.concat([skyline, pd.DataFrame({'num_start':max_x, 'num_end':max_y, 'activity': activity, 'case': case})])
-        skyline = skyline.drop_duplicates().reset_index()[['num_start','num_end','activity','case']]
-
-        return skyline
-        #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
-        #get_skyline_points(first_case).head()
 
     def plot_selected_traces(snippet, output_path=None, show_plot=None):
         #plot_point_transformer('Point transformer: Trace \''+ str(snippet['case'][0]) + '\' only', snippet)
