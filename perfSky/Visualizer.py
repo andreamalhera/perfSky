@@ -11,7 +11,7 @@ import sys
 import random
 
 from collections import OrderedDict
-from perfSky.time_utils import get_relative_timestamps
+from perfSky.Skyline import get_relative_timestamps
 
 class Vis:
     # TODO: Move all drawing helper functions to own file.
