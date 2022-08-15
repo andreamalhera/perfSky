@@ -10,7 +10,7 @@ import sys
 import random
 
 from collections import OrderedDict
-from perfSky.Skyline import get_relative_timestamps, get_duration, get_data_selection_avgtrace, get_skyline_points
+from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points
 
 class Vis:
     # TODO: Move all drawing helper functions to own file.
@@ -219,7 +219,7 @@ class Vis:
     def plot_average_trace(snippet, output_path = None, draw_skylines=None, show_plot=None):
         #FIXME: Average End and start are only taking hours:minutes and not days into account
         #print(snippet['activity'].drop_duplicates().tolist())
-        data_selection = get_data_selection_avgtrace(snippet).iloc[:]
+        data_selection = get_average_trace(snippet).iloc[:]
         traces_selection = data_selection['case'].drop_duplicates().tolist()
         if len(data_selection[data_selection['num_start']>0])>0:
             point = data_selection[data_selection['num_start']>0].sample(n=1)

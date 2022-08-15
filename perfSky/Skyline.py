@@ -55,7 +55,7 @@ def get_relative_timestamps(df, exclude_tasks=[]):
     return relatived
 
 
-def get_data_selection_avgtrace(df):
+def get_average_trace(df):
 
     def get_average_times(group):
 
