@@ -12,6 +12,9 @@ import random
 from collections import OrderedDict
 from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points
 
+CASE_ID_COL = "case"
+ACTIVITY_ID_COL = "activity"
+
 class Vis:
     # TODO: Move all drawing helper functions to own file.
     # TODO: TESTME: Write tests for this module
@@ -41,12 +44,12 @@ class Vis:
         return l
 
     def draw_traces(self, data_selection, ax, draw_skylines=None):
-        unique_trace = data_selection['case'].unique().tolist()
+        unique_trace = data_selection[CASE_ID_COL].unique().tolist()
         colormapt = cm.gist_ncar
         trace_colorlist = [colors.rgb2hex(colormapt(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
         trace_legend = dict(zip(unique_trace, trace_colorlist))
-        for j, k in enumerate(data_selection['case'].drop_duplicates()):
-            current = data_selection[data_selection['case']==k]
+        for j, k in enumerate(data_selection[CASE_ID_COL].drop_duplicates()):
+            current = data_selection[data_selection[CASE_ID_COL]==k]
             l = k
             c = trace_legend.get(l)
 
@@ -115,20 +118,20 @@ class Vis:
         #colormap = cm.gist_rainbow
         #colormap = cm.gist_ncar
 
-        unique_act = sorted(data_selection['activity'].unique().tolist())
-        unique_trace = data_selection['case'].unique().tolist()
+        unique_act = sorted(data_selection[ACTIVITY_ID_COL].unique().tolist())
+        unique_trace = data_selection[CASE_ID_COL].unique().tolist()
 
         colorlist = [colors.rgb2hex(colormap(i)) for i in np.linspace(0, 0.9, len(unique_act))]
         legend = dict(zip(unique_act, colorlist))
-        colorby = 'activity'
+        colorby = ACTIVITY_ID_COL
 
         if activity:
-            data_selection = data_selection.loc[data_selection['activity']==activity].reset_index()
+            data_selection = data_selection.loc[data_selection[ACTIVITY_ID_COL]==activity].reset_index()
             colorlist = [colors.rgb2hex(colormap(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
             legend = dict(zip(unique_trace, colorlist))
-            colorby = 'case'
+            colorby = CASE_ID_COL
         elif traces:
-            data_selection = data_selection.loc[data_selection['case'].isin(traces)].reset_index()
+            data_selection = data_selection.loc[data_selection[CASE_ID_COL].isin(traces)].reset_index()
 
         for i, e in enumerate(data_selection['num_start']):
             x = data_selection['num_start'][i]
@@ -188,13 +191,14 @@ class Vis:
 
     def plot_selected_traces(snippet, output_path=None, show_plot=None):
         #plot_point_transformer('Point transformer: Trace \''+ str(snippet['case'][0]) + '\' only', snippet)
-        traces_selection = snippet['case'].drop_duplicates().tolist()[0:3]
+        traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()[0:3]
         #traces_selection = [unique_trace[1]]
-        data_selection = snippet.loc[snippet['case'].isin(traces_selection)].reset_index().iloc[:]
+        data_selection = snippet.loc[snippet[CASE_ID_COL].isin(traces_selection)].reset_index().iloc[:]
         if len(data_selection[data_selection['num_start']>0])>0:
             point = data_selection[data_selection['num_start']>0].sample(n=1)
             #point = data_selection.iloc[ 1 , : ].to_frame().transpose()
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values),
+            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
+                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
                                             data_selection, size=1, traces=traces_selection, allen_point=point, output_path=output_path,
                                             show_plot=show_plot)
         else:
@@ -203,12 +207,13 @@ class Vis:
         #print(data_selection[['activity','rel_start','rel_end']])
 
     def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None):
-        traces_selection = snippet['case'].drop_duplicates().tolist()
+        traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
         #print(point)
         if len(snippet[snippet['num_start']>0])>0:
             point = snippet[snippet['num_start']>0].sample(n=1)
             #point = snippet.iloc[ 1 , : ].to_frame().transpose()
-            figurept = self.plot_point_transformer('Point transformer: All activities in all traces. Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values), snippet, allen_point=point,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces. Allen\'s point: '
+                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values), snippet, allen_point=point,
                     traces=traces_selection,  size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
@@ -220,17 +225,18 @@ class Vis:
         #FIXME: Average End and start are only taking hours:minutes and not days into account
         #print(snippet['activity'].drop_duplicates().tolist())
         data_selection = get_average_trace(snippet).iloc[:]
-        traces_selection = data_selection['case'].drop_duplicates().tolist()
+        traces_selection = data_selection[CASE_ID_COL].drop_duplicates().tolist()
         if len(data_selection[data_selection['num_start']>0])>0:
             point = data_selection[data_selection['num_start']>0].sample(n=1)
             #data_selection.iloc[ 1 , : ].to_frame().transpose()
             #print(data_selection)
-            figurept = plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values), 
+            figurept = plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '
+                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
                                             data_selection, traces=traces_selection, size=1, allen_point=point,
                                             output_path=output_path, draw_skylines=draw_skylines, show_plot=show_plot)
             #plot_point_transformer('Point transformer: Average trace from all activities', snippet, allen_point=point)
         else:
-            figurept = plot_point_transformer('Point transformer: Average trace from all activities', 
+            figurept = plot_point_transformer('Point transformer: Average trace from all activities',
                                             data_selection, traces=traces_selection, size=1, output_path=output_path,
                                             draw_skylines=draw_skylines, show_plot=show_plot)
         return figurept
@@ -238,7 +244,7 @@ class Vis:
     def plot_selected_activities(snippet, output_path = None, show_plot = None):
         #TODO: Adapt frame dynamically
         #TODO: Add start by zero option
-        unique_act = snippet['activity'].unique().tolist()
+        unique_act = snippet[ACTIVITY_ID_COL].unique().tolist()
         #print('There are ', len(unique_act), 'unique activities.')
         activity_selection=unique_act[0]
         #print(activity_selection)
@@ -248,13 +254,14 @@ class Vis:
 
     def plot_duration_selectedtraces(w_duration, output_path=None, show_plot = None):
         #TODO: Suspect 'meets' line is wrong
-        traces_selection = w_duration['case'].drop_duplicates().tolist()[0:3]
+        traces_selection = w_duration[CASE_ID_COL].drop_duplicates().tolist()[0:3]
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
             #point = w_duration.iloc[ 2 , : ].to_frame().transpose()
             #print(point)
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values),
-                                            w_duration, duration_plot=1, allen_point=point, traces=traces_selection, size=1, 
+            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
+                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
+                                            w_duration, duration_plot=1, allen_point=point, traces=traces_selection, size=1,
                                             output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
@@ -263,7 +270,7 @@ class Vis:
 
 #TODO: Draw skylines
     def plot_duration_alltraces(w_duration, output_path=None, show_plot=None): 
-        traces_selection= w_duration['case'].drop_duplicates().tolist()
+        traces_selection= w_duration[CASE_ID_COL].drop_duplicates().tolist()
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
             #point = w_duration.iloc[ 5 , : ].to_frame().transpose()
@@ -276,18 +283,18 @@ class Vis:
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
     def plot_point_transformer_selection(subset, output_path_prefix, show_plot=None):
-        activity = subset['activity'].apply(lambda row: row.split('(',1)[0]).unique().tolist()
-        #filename_addition = title_from_list(activity)
+        activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
+        #filename_addition = title_from_list(activity_sel)
         filename_addition = ''
         output_path_prefix += '_'+filename_addition
-        print('\nSubset of ', activity, 'has:')
+        print('\nSubset of ', activity_sel, 'has:')
         print(len(subset), ' entries')
 
-        unique_act = subset['activity'].unique().tolist()
+        unique_act = subset[ACTIVITY_ID_COL].unique().tolist()
         print(len(unique_act), 'different activities')
         #print(unique_act['activity'].tolist(),'\n')
 
-        unique_trace = subset['case'].unique().tolist()
+        unique_trace = subset[CASE_ID_COL].unique().tolist()
         print(len(unique_trace), ' cases')
         #print(unique_trace, '\n')
 
@@ -322,7 +329,7 @@ class Vis:
         w_duration['rel_end']=w_duration['duration']
         w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1, show_plot=show_plot)
         w_duration['num_end']=w_duration['t_duration']
-        w_duration = w_duration[['case','activity','rel_start','num_start', 'rel_end', 'num_end']]
+        w_duration = w_duration[[CASE_ID_COL,ACTIVITY_ID_COL,'rel_start','num_start', 'rel_end', 'num_end']]
 
         #print(w_duration.columns)
         #print(len(w_duration))
@@ -340,13 +347,13 @@ class Vis:
     def run_point_transformer(appended):
         EXCLUDED_TASKS=['AllTasks']
 
-        counts = appended.groupby(['activity']).size().reset_index(name='counts').sort_values(by=['counts'], ascending=False)
+        counts = appended.groupby([ACTIVITY_ID_COL]).size().reset_index(name='counts').sort_values(by=['counts'], ascending=False)
         counts = counts.sort_values(by=['counts'], ascending = False)
         counts.head()
 
         #appended = appended.head(100)
         #print(len(appended))
-        unique_act = appended['activity'].unique().tolist()
+        unique_act = appended[ACTIVITY_ID_COL].unique().tolist()
         print(len(unique_act), ' activities')
         #print(unique_act)
 
@@ -358,7 +365,7 @@ class Vis:
         print(len(unique_short_activities),' short activity names:')
         print(unique_short_activities,'\n')
 
-        unique_trace = appended['case'].unique().tolist()
+        unique_trace = appended[CASE_ID_COL].unique().tolist()
         print(len(unique_trace), ' cases')
         #print(unique_trace)
 

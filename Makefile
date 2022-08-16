@@ -10,7 +10,6 @@ clean:
 	endif
 
 install:
-	conda activate py39
 	pip install -r requirements.txt
 	pip install --upgrade .
 
