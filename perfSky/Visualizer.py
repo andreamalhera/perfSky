@@ -197,12 +197,12 @@ class Vis:
         if len(data_selection[data_selection['num_start']>0])>0:
             point = data_selection[data_selection['num_start']>0].sample(n=1)
             #point = data_selection.iloc[ 1 , : ].to_frame().transpose()
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
+            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
                     +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
                                             data_selection, size=1, traces=traces_selection, allen_point=point, output_path=output_path,
                                             show_plot=show_plot)
         else:
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only.',
+            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only.',
                                             data_selection, size=1, traces=traces_selection, output_path=output_path, show_plot=show_plot)
         #print(data_selection[['activity','rel_start','rel_end']])
 
@@ -221,7 +221,8 @@ class Vis:
                     size=1 , draw_skylines=1, output_path=output_path, show_plot=show_plot)
         return figurept
 
-    def plot_average_trace(snippet, output_path = None, draw_skylines=None, show_plot=None):
+    def plot_average_trace(self, snippet, output_path = None, draw_skylines=None, show_plot=None):
+        #TESTME
         #FIXME: Average End and start are only taking hours:minutes and not days into account
         #print(snippet['activity'].drop_duplicates().tolist())
         data_selection = get_average_trace(snippet).iloc[:]
@@ -230,13 +231,13 @@ class Vis:
             point = data_selection[data_selection['num_start']>0].sample(n=1)
             #data_selection.iloc[ 1 , : ].to_frame().transpose()
             #print(data_selection)
-            figurept = plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '
+            figurept = self.plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '
                     +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
                                             data_selection, traces=traces_selection, size=1, allen_point=point,
                                             output_path=output_path, draw_skylines=draw_skylines, show_plot=show_plot)
             #plot_point_transformer('Point transformer: Average trace from all activities', snippet, allen_point=point)
         else:
-            figurept = plot_point_transformer('Point transformer: Average trace from all activities',
+            figurept =self.plot_point_transformer('Point transformer: Average trace from all activities',
                                             data_selection, traces=traces_selection, size=1, output_path=output_path,
                                             draw_skylines=draw_skylines, show_plot=show_plot)
         return figurept
@@ -248,7 +249,7 @@ class Vis:
         #print('There are ', len(unique_act), 'unique activities.')
         activity_selection=unique_act[0]
         #print(activity_selection)
-        figurept = plot_point_transformer('Point transformer: Activity \''+ str(activity_selection) + '\' only', snippet ,
+        figurept = self.plot_point_transformer('Point transformer: Activity \''+ str(activity_selection) + '\' only', snippet ,
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
@@ -259,13 +260,13 @@ class Vis:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
             #point = w_duration.iloc[ 2 , : ].to_frame().transpose()
             #print(point)
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
+            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
                     +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
                                             w_duration, duration_plot=1, allen_point=point, traces=traces_selection, size=1,
                                             output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection),
+            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection),
                     w_duration, duration_plot=1, traces=traces_selection, size=1, output_path=output_path, show_plot=show_plot)
 
 #TODO: Draw skylines
@@ -275,11 +276,11 @@ class Vis:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
             #point = w_duration.iloc[ 5 , : ].to_frame().transpose()
             #print(appended[['case','activity','start_time','end_time']].sort_values(by=['case']))
-            figurept = plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     allen_point=point, traces=traces_selection, output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
     def plot_point_transformer_selection(subset, output_path_prefix, show_plot=None):
