@@ -241,7 +241,7 @@ class Vis:
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
-    def plot_duration_selectedtraces(self, w_duration, output_path=None, show_plot = None):
+    def plot_duration_selected_traces(self, w_duration, output_path=None, show_plot = None):
         #TODO: Suspect 'meets' line is wrong
         #TODO: Merge with plot_duration_alltraces and rename to plot_duration_traces
         traces_selection = w_duration[CASE_ID_COL].drop_duplicates().tolist()[0:3]
@@ -327,7 +327,7 @@ class Vis:
 
         output_path_st_duration = output_path_prefix+'point_transformer_duration_selectedTraces'+'.png'
         #print(output_path_st_duration)
-        self.plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
+        self.plot_duration_selected_traces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
         output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
         #print(output_path_duration)
