@@ -14,6 +14,7 @@ from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_t
 
 CASE_ID_COL = "case"
 ACTIVITY_ID_COL = "activity"
+LEN_SUBSET = 3
 
 class Vis:
 # TODO: TESTME: Write tests for this module
@@ -188,36 +189,22 @@ class Vis:
         plt.close(fig)
         return fig
 
-    def plot_selected_traces(self, snippet, output_path=None, show_plot=None):
-        #plot_point_transformer('Point transformer: Trace \''+ str(snippet['case'][0]) + '\' only', snippet)
-        traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()[0:3]
-        #traces_selection = [unique_trace[1]]
-        data_selection = snippet.loc[snippet[CASE_ID_COL].isin(traces_selection)].reset_index().iloc[:]
-        if len(data_selection[data_selection['num_start']>0])>0:
-            point = data_selection[data_selection['num_start']>0].sample(n=1)
-            #point = data_selection.iloc[ 1 , : ].to_frame().transpose()
-            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
-                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
-                                            data_selection, size=1, traces=traces_selection, allen_point=point, output_path=output_path,
-                                            show_plot=show_plot)
-        else:
-            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only.',
-                                            data_selection, size=1, traces=traces_selection, output_path=output_path, show_plot=show_plot)
-        #print(data_selection[['activity','rel_start','rel_end']])
-
-    def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None):
+    def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None, allen_point=None):
         traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
+        activity_list = snippet[ACTIVITY_ID_COL].drop_duplicates().tolist()
         #print(point)
-        if len(snippet[snippet['num_start']>0])>0:
+        header = 'Point transformer: All '+str(len(activity_list))+' activities in all '+str(len(traces_selection))+' traces.'
+
+        if allen_point is not None and len(snippet[snippet['num_start']>0])>0:
             point = snippet[snippet['num_start']>0].sample(n=1)
             #point = snippet.iloc[ 1 , : ].to_frame().transpose()
-            figurept = self.plot_point_transformer('Point transformer: All activities in all traces. Allen\'s point: '
-                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values), snippet, allen_point=point,
-                    traces=traces_selection,  size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
+            figurept = self.plot_point_transformer(header+' Allen\'s point: '+str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
+                    snippet, allen_point=point, traces=traces_selection,  size=1 , draw_skylines=draw_skylines,
+                    output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = self.plot_point_transformer('Point transformer: All activities in all traces.', snippet, traces=traces_selection,
-                    size=1 , draw_skylines=1, output_path=output_path, show_plot=show_plot)
+            figurept = self.plot_point_transformer(header, snippet, traces=traces_selection,
+                    size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
         return figurept
 
     def plot_average_trace(self, snippet, output_path = None, draw_skylines=None, show_plot=None):
@@ -303,7 +290,8 @@ class Vis:
 
         outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
         #print(outputpath_seltr)
-        self.plot_selected_traces(snippet, output_path=outputpath_seltr, show_plot=show_plot)
+        subset = snippet[snippet[CASE_ID_COL].isin(snippet[CASE_ID_COL].unique()[:LEN_SUBSET])]
+        self.plot_all_traces(subset, output_path=outputpath_seltr, show_plot=show_plot)
 
         output_path_atr = output_path_prefix+'point_transformer_allTraces'+'.png'
         #print(output_path_atr)
