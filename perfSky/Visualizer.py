@@ -110,23 +110,23 @@ class Vis:
         if size:
             fig.set_size_inches(18.5, 18.5)
 
-        #colormap = cm.nipy_spectral
-        #colormap = cm.prism
-        #colormap = cm.tab20
-        colormap = cm.hsv
-        #colormap = cm.gist_rainbow
-        #colormap = cm.gist_ncar
+        #COLORMAP = cm.nipy_spectral
+        #COLORMAP = cm.prism
+        #COLORMAP = cm.tab20
+        COLORMAP = cm.hsv
+        #COLORMAP = cm.gist_rainbow
+        #COLORMAP = cm.gist_ncar
 
         unique_act = sorted(data_selection[ACTIVITY_ID_COL].unique().tolist())
         unique_trace = data_selection[CASE_ID_COL].unique().tolist()
 
-        colorlist = [colors.rgb2hex(colormap(i)) for i in np.linspace(0, 0.9, len(unique_act))]
+        colorlist = [colors.rgb2hex(COLORMAP(i)) for i in np.linspace(0, 0.9, len(unique_act))]
         legend = dict(zip(unique_act, colorlist))
         colorby = ACTIVITY_ID_COL
 
         if activity:
             data_selection = data_selection.loc[data_selection[ACTIVITY_ID_COL]==activity].reset_index()
-            colorlist = [colors.rgb2hex(colormap(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
+            colorlist = [colors.rgb2hex(COLORMAP(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
             legend = dict(zip(unique_trace, colorlist))
             colorby = CASE_ID_COL
         elif traces:
