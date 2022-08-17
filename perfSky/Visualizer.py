@@ -16,8 +16,7 @@ CASE_ID_COL = "case"
 ACTIVITY_ID_COL = "activity"
 
 class Vis:
-    # TODO: Move all drawing helper functions to own file.
-    # TODO: TESTME: Write tests for this module
+# TODO: TESTME: Write tests for this module
 
     def get_color_from_label(label, color):
         return color
@@ -59,7 +58,7 @@ class Vis:
             else:
                 ax.plot(current['num_start'], current['num_end'], label='trace '+k, zorder=0, color=c)
 
-    def draw_allen_lines(allen_point, ax, yax, duration_plot=None):
+    def draw_allen_lines(self, allen_point, ax, yax, duration_plot=None):
                 x = allen_point['num_start'].values[0]
                 y = allen_point['num_end'].values[0]
 
@@ -189,7 +188,7 @@ class Vis:
         plt.close(fig)
         return fig
 
-    def plot_selected_traces(snippet, output_path=None, show_plot=None):
+    def plot_selected_traces(self, snippet, output_path=None, show_plot=None):
         #plot_point_transformer('Point transformer: Trace \''+ str(snippet['case'][0]) + '\' only', snippet)
         traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()[0:3]
         #traces_selection = [unique_trace[1]]
@@ -242,7 +241,8 @@ class Vis:
                                             draw_skylines=draw_skylines, show_plot=show_plot)
         return figurept
 
-    def plot_selected_activities(snippet, output_path = None, show_plot = None):
+    def plot_selected_activities(self, snippet, output_path = None, show_plot = None):
+        #TODO: Add activity list selection as param
         #TODO: Adapt frame dynamically
         #TODO: Add start by zero option
         unique_act = snippet[ACTIVITY_ID_COL].unique().tolist()
@@ -253,7 +253,7 @@ class Vis:
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
-    def plot_duration_selectedtraces(w_duration, output_path=None, show_plot = None):
+    def plot_duration_selectedtraces(self, w_duration, output_path=None, show_plot = None):
         #TODO: Suspect 'meets' line is wrong
         traces_selection = w_duration[CASE_ID_COL].drop_duplicates().tolist()[0:3]
         if len(w_duration[w_duration['num_start']>0])>0:
@@ -269,8 +269,8 @@ class Vis:
             figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection),
                     w_duration, duration_plot=1, traces=traces_selection, size=1, output_path=output_path, show_plot=show_plot)
 
-#TODO: Draw skylines
-    def plot_duration_alltraces(w_duration, output_path=None, show_plot=None): 
+    def plot_duration_alltraces(self, w_duration, output_path=None, show_plot=None): 
+        #TODO: Draw skylines
         traces_selection= w_duration[CASE_ID_COL].drop_duplicates().tolist()
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
@@ -283,7 +283,7 @@ class Vis:
             figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
-    def plot_point_transformer_selection(subset, output_path_prefix, show_plot=None):
+    def plot_all(self, subset, output_path_prefix, show_plot=None):
         activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
         #filename_addition = title_from_list(activity_sel)
         filename_addition = ''
@@ -303,32 +303,32 @@ class Vis:
 
         outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
         #print(outputpath_seltr)
-        plot_selected_traces(snippet, output_path=outputpath_seltr, show_plot=show_plot)
+        self.plot_selected_traces(snippet, output_path=outputpath_seltr, show_plot=show_plot)
 
         output_path_atr = output_path_prefix+'point_transformer_allTraces'+'.png'
         #print(output_path_atr)
-        plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
+        self.plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
 
         output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline'+'.png'
         #print(output_path_atr)
-        plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
+        self.plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
 
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace'+'.png'
         #print(output_path_avtr)
-        plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
+        self.plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
 
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
         #print(output_path_avtr)
-        plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
+        self.plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
 
         output_path_sa = output_path_prefix+'point_transformer_selectedAct'+'.png'
         #print(output_path_sa)
-        plot_selected_activities(snippet, output_path=output_path_sa)
+        self.plot_selected_activities(snippet, output_path=output_path_sa)
 
         w_duration = snippet.copy()
-        w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1, show_plot=show_plot)
+        w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1)#, show_plot=show_plot)
         w_duration['rel_end']=w_duration['duration']
-        w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1, show_plot=show_plot)
+        w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1)#, show_plot=show_plot)
         w_duration['num_end']=w_duration['t_duration']
         w_duration = w_duration[[CASE_ID_COL,ACTIVITY_ID_COL,'rel_start','num_start', 'rel_end', 'num_end']]
 
@@ -337,11 +337,11 @@ class Vis:
 
         output_path_st_duration = output_path_prefix+'point_transformer_duration_selectedTraces'+'.png'
         #print(output_path_st_duration)
-        plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
+        self.plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
         output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
         #print(output_path_duration)
-        plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
+        self.plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
         return snippet
 
