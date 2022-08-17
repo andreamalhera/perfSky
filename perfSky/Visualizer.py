@@ -190,6 +190,7 @@ class Vis:
         return fig
 
     def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None, allen_point=None):
+        #TODO: Rename to plot_traces. Lookout for calls in notebooks.
         traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
         activity_list = snippet[ACTIVITY_ID_COL].drop_duplicates().tolist()
         #print(point)
@@ -242,6 +243,7 @@ class Vis:
 
     def plot_duration_selectedtraces(self, w_duration, output_path=None, show_plot = None):
         #TODO: Suspect 'meets' line is wrong
+        #TODO: Merge with plot_duration_alltraces and rename to plot_duration_traces
         traces_selection = w_duration[CASE_ID_COL].drop_duplicates().tolist()[0:3]
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
