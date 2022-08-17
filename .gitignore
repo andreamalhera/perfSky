@@ -4,3 +4,4 @@ notebooks/.ipynb_checkpoints/
 *.egg-info/
 tests/data/daily/*.log
 miniconda3/*
+output/*
