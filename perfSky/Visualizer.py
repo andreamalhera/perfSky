@@ -344,31 +344,3 @@ class Vis:
         self.plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
         return snippet
-
-    def run_point_transformer(appended):
-        EXCLUDED_TASKS=['AllTasks']
-
-        counts = appended.groupby([ACTIVITY_ID_COL]).size().reset_index(name='counts').sort_values(by=['counts'], ascending=False)
-        counts = counts.sort_values(by=['counts'], ascending = False)
-        counts.head()
-
-        #appended = appended.head(100)
-        #print(len(appended))
-        unique_act = appended[ACTIVITY_ID_COL].unique().tolist()
-        print(len(unique_act), ' activities')
-        #print(unique_act)
-
-        short_activities=[]
-        for item in unique_act:
-            short_name = item.split('(',1)[0]
-            short_activities.append(short_name)
-        unique_short_activities = list(sorted(set(short_activities)-set(EXCLUDED_TASKS)))
-        print(len(unique_short_activities),' short activity names:')
-        print(unique_short_activities,'\n')
-
-        unique_trace = appended[CASE_ID_COL].unique().tolist()
-        print(len(unique_trace), ' cases')
-        #print(unique_trace)
-
-        return appended
-
