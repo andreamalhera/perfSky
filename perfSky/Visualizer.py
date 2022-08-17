@@ -312,8 +312,9 @@ class Vis:
         self.plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
 
         # Skyline average
-        #TODO: Implement
         output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
+        skyline_points = get_skyline_points(snippet)
+        self.plot_average_trace(skyline_points, output_path=output_path_avtr, show_plot=show_plot)
 
         # Skyline activity set
         #TODO: Implement
