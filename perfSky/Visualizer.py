@@ -290,29 +290,37 @@ class Vis:
 
         snippet = get_relative_timestamps(subset, ['AllTasks'])
 
-        outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
-        #print(outputpath_seltr)
+        # First N traces
+        outputpath_seltr = output_path_prefix+'point_transformer_first'+str(LEN_SUBSET)+'Traces.png'
         subset = snippet[snippet[CASE_ID_COL].isin(snippet[CASE_ID_COL].unique()[:LEN_SUBSET])]
         self.plot_all_traces(subset, output_path=outputpath_seltr, show_plot=show_plot)
 
-        output_path_atr = output_path_prefix+'point_transformer_allTraces'+'.png'
-        #print(output_path_atr)
+        # All traces
+        output_path_atr = output_path_prefix+'point_transformer_allTraces.png'
         self.plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
 
-        output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline'+'.png'
-        #print(output_path_atr)
+        # All skylines
+        output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline.png'
         self.plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
 
-        output_path_avtr = output_path_prefix+'point_transformer_averageTrace'+'.png'
-        #print(output_path_avtr)
+        # Average trace
+        output_path_avtr = output_path_prefix+'point_transformer_averageTrace.png'
         self.plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
 
+        # Average skyline
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
-        #print(output_path_avtr)
         self.plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
 
-        output_path_sa = output_path_prefix+'point_transformer_selectedAct'+'.png'
-        #print(output_path_sa)
+        # Skyline average
+        #TODO: Implement
+        output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
+
+        # Skyline activity set
+        #TODO: Implement
+        output_path_sa = output_path_prefix+'point_transformer_skylineActSet.png'
+
+        # Only first activity
+        output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
         self.plot_selected_activities(snippet, output_path=output_path_sa)
 
         w_duration = snippet.copy()
@@ -325,12 +333,12 @@ class Vis:
         #print(w_duration.columns)
         #print(len(w_duration))
 
+        # Duration first N traces
         output_path_st_duration = output_path_prefix+'point_transformer_duration_selectedTraces'+'.png'
-        #print(output_path_st_duration)
         self.plot_duration_selected_traces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
+        # Duration all traces
         output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
-        #print(output_path_duration)
         self.plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
         return snippet
