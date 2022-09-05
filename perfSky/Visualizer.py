@@ -10,7 +10,8 @@ import sys
 import random
 
 from collections import OrderedDict
-from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points
+from matplotlib.ticker import FuncFormatter
+from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points, get_skyline_activity_set
 
 CASE_ID_COL = "case"
 ACTIVITY_ID_COL = "activity"
@@ -241,6 +242,35 @@ class Vis:
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
+    def plot_skyline_activity_set(merged_by_activity):
+        plt.rcdefaults()
+        fig, ax = plt.subplots(figsize=(20, 20))
+
+        # Example data
+        people = merged_by_activity['activity']
+        y_pos = np.arange(len(people))
+        performance = merged_by_activity['probability_activity_in_skyline']
+        error = 0
+
+        def millions(x, pos):
+            'The two args are the value and tick position'
+            return '%11.1i'% (x)+'%'
+
+
+        formatter = FuncFormatter(millions)
+
+        ax.barh(y_pos, performance, xerr=error, align='center')
+        ax.xaxis.set_major_formatter(formatter)
+        ax.set_yticks(y_pos)
+        ax.set_yticklabels(people)
+        ax.invert_yaxis()  # labels read top-to-bottom
+        ax.set_xlabel('Probability')
+        ax.set_title('Probability of activity belonging to skyline')
+
+        #output_path = LUIGI_LOG_PATH+'/../../graphs/allDataAtOnce/daily.2019-0709_three_months_anomaly_probabilities_activity_set.png'
+        #plt.savefig(output_path,  bbox_inches='tight')
+        plt.show()
+
     def plot_duration_selected_traces(self, w_duration, output_path=None, show_plot = None):
         #TODO: Suspect 'meets' line is wrong
         #TODO: Merge with plot_duration_alltraces and rename to plot_duration_traces
@@ -273,6 +303,7 @@ class Vis:
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
     def plot_all(self, subset, output_path_prefix, show_plot=None):
+        #TODO: Move to experiments module and/or notebook
         activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
         #filename_addition = title_from_list(activity_sel)
         filename_addition = ''
@@ -319,8 +350,10 @@ class Vis:
         # Skyline activity set
         #TODO: Implement
         output_path_sa = output_path_prefix+'point_transformer_skylineActSet.png'
+        sky_act_set = get_skyline_activity_set(snippet)
 
         # Only first activity
+        #TODO: Select certain activity as param
         output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
         self.plot_selected_activities(snippet, output_path=output_path_sa)
 

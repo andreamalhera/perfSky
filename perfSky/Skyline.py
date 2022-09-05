@@ -104,3 +104,25 @@ def get_skyline_points(df):
     return skyline
     #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
     #get_skyline_points(first_case).head()
+
+def get_skyline_activity_set(df):
+    #TODO: Implement
+    all_by_activity = df.groupby('activity').size().reset_index(name='total_points_in_activity').sort_values(by=['total_points_in_activity'], ascending=False)
+    skyline_by_activity = skyline_points.groupby('activity').size().reset_index(name='points_in_skyline').sort_values(by=['points_in_skyline'], ascending=False)
+    r_by_activity = representative.groupby('activity').size().reset_index(name='cases_in_skyline').sort_values(by=['cases_in_skyline'], ascending=False)
+    by_activity = r_by_activity.merge(skyline_by_activity, on='activity')
+    #by_activity = by_activity.merge(all_by_activity, on='activity')
+    #all_by_activity.plot.hist(bins=16, alpha=0.5)
+
+    merged_by_activity = by_activity.merge(all_by_activity)[['activity','total_points_in_activity','points_in_skyline', 'cases_in_skyline']].sort_values(by=['total_points_in_activity'], ascending=False)
+    #merged_by_activity['skyline_percentage'] = round(merged_by_activity.apply(lambda row: row['points_in_skyline']/row['total_points_in_activity']*100, axis=1),2)
+
+    total_diffferent_cases= len(subset['case'].unique())
+    total_points_in_skyline = merged_by_activity['points_in_skyline'].sum()
+
+    merged_by_activity['probability_activity_in_skyline']=round(merged_by_activity.apply(lambda row: row['cases_in_skyline']/total_diffferent_cases*100, axis=1),2)
+    #merged_by_activity['prob_skyline_appearance']=round(merged_by_activity.apply(lambda row: row['points_in_skyline']/(total_points_in_skyline/total_diffferent_cases)*100, axis=1),2)
+    print(len(merged_by_activity))
+    merged_by_activity = merged_by_activity.sort_values(by='probability_activity_in_skyline', ascending=False)
+
+    return merged_by_activity
