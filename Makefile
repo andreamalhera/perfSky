@@ -1,11 +1,17 @@
+#!/bin/bash
 -include envvars.mk
 
 envvars.mk: envvars.sh
 	sed 's/"//g ; s/=/:=/' < $< > $@
 
+clean:
+	ifeq ($(shell eval conda info -e | grep \'*\'),' active environment : py39')
+		echo 'WAS'
+	endif
+
 install:
 	pip install -r requirements.txt
-	pip install .
+	pip install --upgrade .
 
 lint: install
 	flake8 perfSky tests
@@ -25,3 +31,4 @@ jupyter:
 	cd $(NOTEBOOKS_PATH) &&\
 	lsof -ti:9000 | xargs kill -9 &&\
 	jupyter notebook  --port=9000 --no-browser &
+

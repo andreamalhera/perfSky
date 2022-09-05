@@ -14,8 +14,9 @@ If you'd like to learn more about how it works, see References below.
 
 Brought to you by [Andrea Maldonado](andreamalher.works@gmail.com)
 
-## Presentation slides and master thesis
+## Presentation slides, paper and master thesis:
 * [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
+* [Performance Skyline: Inferring Process Performance Models from Interval Events Paper](https://www.springerprofessional.de/en/performance-skyline-inferring-process-performance-models-from-in/19021296)
 * [Performance Skyline Master's Thesis](master_thesis/written_composition_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
 
 ## Structure
@@ -33,23 +34,23 @@ The following notebooks contain prototypes of parts also implemented in the code
 - [pointTransformer.ipynb](notebooks/pointTransformer.ipynb)
 - [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection 
 
-The code is divided in two main modules, [preprocessing](perfSky/preprocessing) and [Visualizer](perfSky/Visualizer.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
-The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. It also contains methods to compute the performance skyline and the average trace from a trace set.
+The code is divided in three main modules, [preprocessing](perfSky/preprocessing), [Skyline](perfSky/Skyline.py) and [Visualizer](perfSky/Visualizer.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
+The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. Skyline contains methods to compute the performance skyline and the average trace from a trace set.
 
 
 ## Installation
 ### Requirements:
-- (Miniconda)[https://docs.conda.io/en/latest/miniconda.html]
-- Python 3.6+
+- [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+- Python 3.9+
 - Filled envvars.sh: copy ennvars_sample.sh to envvars.sh and fill the blanks.
 
 ### For experimenting on jupyter notebooks:
 ```
-conda create -n perfSky_venv python=3
-conda activate perfSky_venv
+conda create -n py39 python=3.9
+conda activate py39
 
 #install requirements
-pip install -r requirements.txt
+pip install .
 jupyter lab --port=9000 # To tunnel to local machine add: --no-browser &
 
 # In local machine (only in case you are tunneling): 
@@ -81,7 +82,3 @@ To run this pipeline in other luigi logs follow these steps:
 
 ## References
 The algorithm used by `perfSky` is taken directly from the original paper by Maldonado, Sontheim, Richter and Seidl. If you would like to discuss the paper, or corresponding research questions on temporal process mining (we have implemented a few other algorithms as well) please email the authors.
-
-### Important sources
-
-- http://pm4py.org/

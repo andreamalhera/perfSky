@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import datetime
-import time
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.colors as colors
@@ -11,11 +10,15 @@ import sys
 import random
 
 from collections import OrderedDict
-from perfSky.time_utils import get_relative_timestamps
+from matplotlib.ticker import FuncFormatter
+from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points, get_skyline_activity_set
+
+CASE_ID_COL = "case"
+ACTIVITY_ID_COL = "activity"
+LEN_SUBSET = 3
 
 class Vis:
-    # TODO: Move all drawing helper functions to own file.
-    # TODO: TESTME: Write tests for this module
+# TODO: TESTME: Write tests for this module
 
     def get_color_from_label(label, color):
         return color
@@ -42,22 +45,22 @@ class Vis:
         return l
 
     def draw_traces(self, data_selection, ax, draw_skylines=None):
-        unique_trace = data_selection['case'].unique().tolist()
+        unique_trace = data_selection[CASE_ID_COL].unique().tolist()
         colormapt = cm.gist_ncar
         trace_colorlist = [colors.rgb2hex(colormapt(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
         trace_legend = dict(zip(unique_trace, trace_colorlist))
-        for j, k in enumerate(data_selection['case'].drop_duplicates()):
-            current = data_selection[data_selection['case']==k]
+        for j, k in enumerate(data_selection[CASE_ID_COL].drop_duplicates()):
+            current = data_selection[data_selection[CASE_ID_COL]==k]
             l = k
             c = trace_legend.get(l)
 
             if draw_skylines:
-                skyline = self.get_skyline_points(current)
+                skyline = get_skyline_points(current)
                 ax.plot(skyline['num_start'], skyline['num_end'], label='skyline '+k, zorder=0, color=c)
             else:
                 ax.plot(current['num_start'], current['num_end'], label='trace '+k, zorder=0, color=c)
 
-    def draw_allen_lines(allen_point, ax, yax, duration_plot=None):
+    def draw_allen_lines(self, allen_point, ax, yax, duration_plot=None):
                 x = allen_point['num_start'].values[0]
                 y = allen_point['num_end'].values[0]
 
@@ -109,27 +112,27 @@ class Vis:
         if size:
             fig.set_size_inches(18.5, 18.5)
 
-        #colormap = cm.nipy_spectral
-        #colormap = cm.prism
-        #colormap = cm.tab20
-        colormap = cm.hsv
-        #colormap = cm.gist_rainbow
-        #colormap = cm.gist_ncar
+        #COLORMAP = cm.nipy_spectral
+        #COLORMAP = cm.prism
+        #COLORMAP = cm.tab20
+        COLORMAP = cm.hsv
+        #COLORMAP = cm.gist_rainbow
+        #COLORMAP = cm.gist_ncar
 
-        unique_act = sorted(data_selection['activity'].unique().tolist())
-        unique_trace = data_selection['case'].unique().tolist()
+        unique_act = sorted(data_selection[ACTIVITY_ID_COL].unique().tolist())
+        unique_trace = data_selection[CASE_ID_COL].unique().tolist()
 
-        colorlist = [colors.rgb2hex(colormap(i)) for i in np.linspace(0, 0.9, len(unique_act))]
+        colorlist = [colors.rgb2hex(COLORMAP(i)) for i in np.linspace(0, 0.9, len(unique_act))]
         legend = dict(zip(unique_act, colorlist))
-        colorby = 'activity'
+        colorby = ACTIVITY_ID_COL
 
         if activity:
-            data_selection = data_selection.loc[data_selection['activity']==activity].reset_index()
-            colorlist = [colors.rgb2hex(colormap(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
+            data_selection = data_selection.loc[data_selection[ACTIVITY_ID_COL]==activity].reset_index()
+            colorlist = [colors.rgb2hex(COLORMAP(i)) for i in np.linspace(0, 0.9, len(unique_trace))]
             legend = dict(zip(unique_trace, colorlist))
-            colorby = 'case'
+            colorby = CASE_ID_COL
         elif traces:
-            data_selection = data_selection.loc[data_selection['case'].isin(traces)].reset_index()
+            data_selection = data_selection.loc[data_selection[CASE_ID_COL].isin(traces)].reset_index()
 
         for i, e in enumerate(data_selection['num_start']):
             x = data_selection['num_start'][i]
@@ -187,239 +190,189 @@ class Vis:
         plt.close(fig)
         return fig
 
-
-    def get_duration(start_time, end_time):
-        start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        end = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
-        duration = abs(end - start)
-        return duration
-#get_duration(ex['timestamp'][10],ex['timestamp'][1])
-
-    def get_data_selection_avgtrace(self, df):
-
-        def get_average_times(group):
-
-            def avg_datetime(series):
-                averages = (series.sum())/len(series)
-                #averages = time.strftime('%H:%M:%S', time.gmtime(averages))
-                return averages
-
-            group['average_start'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_start'])))
-            group['average_end'] = time.strftime('%H:%M:%S', time.gmtime(avg_datetime(group['num_end'])))
-            group['num_start'] = avg_datetime(group['num_start'])
-            group['num_end'] = avg_datetime(group['num_end'])
-            group['std_num_end'] = group['num_end'].std()
-            return group
-
-        average_trace = df[['case','activity','num_start','num_end']].iloc[: , :]
-        average_trace = average_trace.groupby(['activity'])
-        average_trace = average_trace.apply(get_average_times)
-        average_trace = average_trace.drop_duplicates('activity', keep='first').reset_index()
-        average_trace['case'] = 'Average Case'
-        average_trace = average_trace[['activity','average_start', 'average_end','num_start','num_end', 'case', 'std_num_end']].sort_values(by=['num_start'])
-        return average_trace
-
-    def get_skyline_points(self, df):
-        df = df.reset_index()
-        df.sort_values(by=['num_start'])
-        skyline = pd.DataFrame()
-        for unique_case in df['case'].unique():
-            max_x = []
-            max_y = []
-            activity = []
-            case = []
-            iter_case = df[df['case']==unique_case]
-            for i in range(len(iter_case)):
-                maxi = max(iter_case['num_start'][0:i+1].values.tolist())
-                mayi = max(iter_case['num_end'][0:i+1].values.tolist())
-                #print(e, maxi, mayi)
-                if maxi in iter_case[iter_case['num_end']==mayi]['num_start'].values:
-                    max_x.append(maxi)
-                    max_y.append(mayi)
-                    activity.append(iter_case['activity'].iloc[i])
-                    case.append(iter_case['case'].iloc[i])
-            skyline = pd.concat([skyline, pd.DataFrame({'num_start':max_x, 'num_end':max_y, 'activity': activity, 'case': case})])
-        skyline = skyline.drop_duplicates().reset_index()[['num_start','num_end','activity','case']]
-
-        return skyline
-        #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
-        #get_skyline_points(first_case).head()
-
-    def plot_selected_traces(snippet, output_path=None, show_plot=None):
-        #plot_point_transformer('Point transformer: Trace \''+ str(snippet['case'][0]) + '\' only', snippet)
-        traces_selection = snippet['case'].drop_duplicates().tolist()[0:3]
-        #traces_selection = [unique_trace[1]]
-        data_selection = snippet.loc[snippet['case'].isin(traces_selection)].reset_index().iloc[:]
-        if len(data_selection[data_selection['num_start']>0])>0:
-            point = data_selection[data_selection['num_start']>0].sample(n=1)
-            #point = data_selection.iloc[ 1 , : ].to_frame().transpose()
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values),
-                                            data_selection, size=1, traces=traces_selection, allen_point=point, output_path=output_path,
-                                            show_plot=show_plot)
-        else:
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only.',
-                                            data_selection, size=1, traces=traces_selection, output_path=output_path, show_plot=show_plot)
-        #print(data_selection[['activity','rel_start','rel_end']])
-
-    def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None):
-        traces_selection = snippet['case'].drop_duplicates().tolist()
+    def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None, allen_point=None):
+        #TODO: Rename to plot_traces. Lookout for calls in notebooks.
+        traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
+        activity_list = snippet[ACTIVITY_ID_COL].drop_duplicates().tolist()
         #print(point)
-        if len(snippet[snippet['num_start']>0])>0:
+        header = 'Point transformer: All '+str(len(activity_list))+' activities in all '+str(len(traces_selection))+' traces.'
+
+        if allen_point is not None and len(snippet[snippet['num_start']>0])>0:
             point = snippet[snippet['num_start']>0].sample(n=1)
             #point = snippet.iloc[ 1 , : ].to_frame().transpose()
-            figurept = self.plot_point_transformer('Point transformer: All activities in all traces. Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values), snippet, allen_point=point,
-                    traces=traces_selection,  size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
+            figurept = self.plot_point_transformer(header+' Allen\'s point: '+str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
+                    snippet, allen_point=point, traces=traces_selection,  size=1 , draw_skylines=draw_skylines,
+                    output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = self.plot_point_transformer('Point transformer: All activities in all traces.', snippet, traces=traces_selection,
-                    size=1 , draw_skylines=1, output_path=output_path, show_plot=show_plot)
+            figurept = self.plot_point_transformer(header, snippet, traces=traces_selection,
+                    size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
         return figurept
 
-    def plot_average_trace(snippet, output_path = None, draw_skylines=None, show_plot=None):
+    def plot_average_trace(self, snippet, output_path = None, draw_skylines=None, show_plot=None):
+        #TESTME
         #FIXME: Average End and start are only taking hours:minutes and not days into account
         #print(snippet['activity'].drop_duplicates().tolist())
-        data_selection = get_data_selection_avgtrace(snippet).iloc[:]
-        traces_selection = data_selection['case'].drop_duplicates().tolist()
+        data_selection = get_average_trace(snippet).iloc[:]
+        traces_selection = data_selection[CASE_ID_COL].drop_duplicates().tolist()
         if len(data_selection[data_selection['num_start']>0])>0:
             point = data_selection[data_selection['num_start']>0].sample(n=1)
             #data_selection.iloc[ 1 , : ].to_frame().transpose()
             #print(data_selection)
-            figurept = plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values), 
+            figurept = self.plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '
+                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
                                             data_selection, traces=traces_selection, size=1, allen_point=point,
                                             output_path=output_path, draw_skylines=draw_skylines, show_plot=show_plot)
             #plot_point_transformer('Point transformer: Average trace from all activities', snippet, allen_point=point)
         else:
-            figurept = plot_point_transformer('Point transformer: Average trace from all activities', 
+            figurept =self.plot_point_transformer('Point transformer: Average trace from all activities',
                                             data_selection, traces=traces_selection, size=1, output_path=output_path,
                                             draw_skylines=draw_skylines, show_plot=show_plot)
         return figurept
 
-    def plot_selected_activities(snippet, output_path = None, show_plot = None):
+    def plot_selected_activities(self, snippet, output_path = None, show_plot = None):
+        #TODO: Add activity list selection as param
         #TODO: Adapt frame dynamically
         #TODO: Add start by zero option
-        unique_act = snippet['activity'].unique().tolist()
+        unique_act = snippet[ACTIVITY_ID_COL].unique().tolist()
         #print('There are ', len(unique_act), 'unique activities.')
         activity_selection=unique_act[0]
         #print(activity_selection)
-        figurept = plot_point_transformer('Point transformer: Activity \''+ str(activity_selection) + '\' only', snippet ,
+        figurept = self.plot_point_transformer('Point transformer: Activity \''+ str(activity_selection) + '\' only', snippet ,
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
-    def plot_duration_selectedtraces(w_duration, output_path=None, show_plot = None):
+    def plot_skyline_activity_set(merged_by_activity):
+        plt.rcdefaults()
+        fig, ax = plt.subplots(figsize=(20, 20))
+
+        # Example data
+        people = merged_by_activity['activity']
+        y_pos = np.arange(len(people))
+        performance = merged_by_activity['probability_activity_in_skyline']
+        error = 0
+
+        def millions(x, pos):
+            'The two args are the value and tick position'
+            return '%11.1i'% (x)+'%'
+
+
+        formatter = FuncFormatter(millions)
+
+        ax.barh(y_pos, performance, xerr=error, align='center')
+        ax.xaxis.set_major_formatter(formatter)
+        ax.set_yticks(y_pos)
+        ax.set_yticklabels(people)
+        ax.invert_yaxis()  # labels read top-to-bottom
+        ax.set_xlabel('Probability')
+        ax.set_title('Probability of activity belonging to skyline')
+
+        #output_path = LUIGI_LOG_PATH+'/../../graphs/allDataAtOnce/daily.2019-0709_three_months_anomaly_probabilities_activity_set.png'
+        #plt.savefig(output_path,  bbox_inches='tight')
+        plt.show()
+
+    def plot_duration_selected_traces(self, w_duration, output_path=None, show_plot = None):
         #TODO: Suspect 'meets' line is wrong
-        traces_selection = w_duration['case'].drop_duplicates().tolist()[0:3]
+        #TODO: Merge with plot_duration_alltraces and rename to plot_duration_traces
+        traces_selection = w_duration[CASE_ID_COL].drop_duplicates().tolist()[0:3]
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
             #point = w_duration.iloc[ 2 , : ].to_frame().transpose()
             #print(point)
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '+str(point['activity'].values)+' in '+str(point['case'].values),
-                                            w_duration, duration_plot=1, allen_point=point, traces=traces_selection, size=1, 
+            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection) + ' only, Allen\'s point: '
+                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
+                                            w_duration, duration_plot=1, allen_point=point, traces=traces_selection, size=1,
                                             output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = plot_point_transformer('Point transformer: Trace '+ str(traces_selection),
+            figurept = self.plot_point_transformer('Point transformer: Trace '+ str(traces_selection),
                     w_duration, duration_plot=1, traces=traces_selection, size=1, output_path=output_path, show_plot=show_plot)
 
-#TODO: Draw skylines
-    def plot_duration_alltraces(w_duration, output_path=None, show_plot=None): 
-        traces_selection= w_duration['case'].drop_duplicates().tolist()
+    def plot_duration_alltraces(self, w_duration, output_path=None, show_plot=None): 
+        #TODO: Draw skylines
+        traces_selection= w_duration[CASE_ID_COL].drop_duplicates().tolist()
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
             #point = w_duration.iloc[ 5 , : ].to_frame().transpose()
             #print(appended[['case','activity','start_time','end_time']].sort_values(by=['case']))
-            figurept = plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     allen_point=point, traces=traces_selection, output_path=output_path, show_plot=show_plot)
             #plot_point_transformer('Point transformer: All activities in all traces', snippet, size=1, allen_point=snippet[(snippet['case']==4)&(snippet['num_start']==75840)])
         else:
-            figurept = plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
+            figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
-    def plot_point_transformer_selection(subset, output_path_prefix, show_plot=None):
-        activity = subset['activity'].apply(lambda row: row.split('(',1)[0]).unique().tolist()
-        #filename_addition = title_from_list(activity)
+    def plot_all(self, subset, output_path_prefix, show_plot=None):
+        #TODO: Move to experiments module and/or notebook
+        activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
+        #filename_addition = title_from_list(activity_sel)
         filename_addition = ''
         output_path_prefix += '_'+filename_addition
-        print('\nSubset of ', activity, 'has:')
+        print('\nSubset of ', activity_sel, 'has:')
         print(len(subset), ' entries')
 
-        unique_act = subset['activity'].unique().tolist()
+        unique_act = subset[ACTIVITY_ID_COL].unique().tolist()
         print(len(unique_act), 'different activities')
         #print(unique_act['activity'].tolist(),'\n')
 
-        unique_trace = subset['case'].unique().tolist()
+        unique_trace = subset[CASE_ID_COL].unique().tolist()
         print(len(unique_trace), ' cases')
         #print(unique_trace, '\n')
 
         snippet = get_relative_timestamps(subset, ['AllTasks'])
 
-        outputpath_seltr = output_path_prefix+'point_transformer_selectedTraces'+'.png'
-        #print(outputpath_seltr)
-        plot_selected_traces(snippet, output_path=outputpath_seltr, show_plot=show_plot)
+        # First N traces
+        outputpath_seltr = output_path_prefix+'point_transformer_first'+str(LEN_SUBSET)+'Traces.png'
+        subset = snippet[snippet[CASE_ID_COL].isin(snippet[CASE_ID_COL].unique()[:LEN_SUBSET])]
+        self.plot_all_traces(subset, output_path=outputpath_seltr, show_plot=show_plot)
 
-        output_path_atr = output_path_prefix+'point_transformer_allTraces'+'.png'
-        #print(output_path_atr)
-        plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
+        # All traces
+        output_path_atr = output_path_prefix+'point_transformer_allTraces.png'
+        self.plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
 
-        output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline'+'.png'
-        #print(output_path_atr)
-        plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
+        # All skylines
+        output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline.png'
+        self.plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
 
-        output_path_avtr = output_path_prefix+'point_transformer_averageTrace'+'.png'
-        #print(output_path_avtr)
-        plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
+        # Average trace
+        output_path_avtr = output_path_prefix+'point_transformer_averageTrace.png'
+        self.plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
 
+        # Average skyline
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
-        #print(output_path_avtr)
-        plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
+        self.plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
 
-        output_path_sa = output_path_prefix+'point_transformer_selectedAct'+'.png'
-        #print(output_path_sa)
-        plot_selected_activities(snippet, output_path=output_path_sa)
+        # Skyline average
+        output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
+        skyline_points = get_skyline_points(snippet)
+        self.plot_average_trace(skyline_points, output_path=output_path_avtr, show_plot=show_plot)
+
+        # Skyline activity set
+        #TODO: Implement
+        output_path_sa = output_path_prefix+'point_transformer_skylineActSet.png'
+        sky_act_set = get_skyline_activity_set(snippet)
+
+        # Only first activity
+        #TODO: Select certain activity as param
+        output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
+        self.plot_selected_activities(snippet, output_path=output_path_sa)
 
         w_duration = snippet.copy()
-        w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1, show_plot=show_plot)
+        w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1)#, show_plot=show_plot)
         w_duration['rel_end']=w_duration['duration']
-        w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1, show_plot=show_plot)
+        w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1)#, show_plot=show_plot)
         w_duration['num_end']=w_duration['t_duration']
-        w_duration = w_duration[['case','activity','rel_start','num_start', 'rel_end', 'num_end']]
+        w_duration = w_duration[[CASE_ID_COL,ACTIVITY_ID_COL,'rel_start','num_start', 'rel_end', 'num_end']]
 
         #print(w_duration.columns)
         #print(len(w_duration))
 
+        # Duration first N traces
         output_path_st_duration = output_path_prefix+'point_transformer_duration_selectedTraces'+'.png'
-        #print(output_path_st_duration)
-        plot_duration_selectedtraces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
+        self.plot_duration_selected_traces(w_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
+        # Duration all traces
         output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
-        #print(output_path_duration)
-        plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
+        self.plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
         return snippet
-
-    def run_point_transformer(appended):
-        EXCLUDED_TASKS=['AllTasks']
-
-        counts = appended.groupby(['activity']).size().reset_index(name='counts').sort_values(by=['counts'], ascending=False)
-        counts = counts.sort_values(by=['counts'], ascending = False)
-        counts.head()
-
-        #appended = appended.head(100)
-        #print(len(appended))
-        unique_act = appended['activity'].unique().tolist()
-        print(len(unique_act), ' activities')
-        #print(unique_act)
-
-        short_activities=[]
-        for item in unique_act:
-            short_name = item.split('(',1)[0]
-            short_activities.append(short_name)
-        unique_short_activities = list(sorted(set(short_activities)-set(EXCLUDED_TASKS)))
-        print(len(unique_short_activities),' short activity names:')
-        print(unique_short_activities,'\n')
-
-        unique_trace = appended['case'].unique().tolist()
-        print(len(unique_trace), ' cases')
-        #print(unique_trace)
-
-        return appended
-
