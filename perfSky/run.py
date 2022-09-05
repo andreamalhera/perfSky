@@ -6,6 +6,7 @@ from difflib import SequenceMatcher
 #from perfSky.pm4pyExample import run_inductiveminer_example as pm4py_example
 from perfSky.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 from perfSky.preprocessing.catter import run_catter as catter
+from perfSky.Skyline import get_relative_timestamps
 from perfSky import Visualizer as visualizer
 from perfSky.Skyline import get_relative_timestamps
 

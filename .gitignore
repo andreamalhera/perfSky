@@ -5,3 +5,4 @@ notebooks/.ipynb_checkpoints/
 tests/data/daily/*.log
 miniconda3/*
 output/*
+*__pycache__*
