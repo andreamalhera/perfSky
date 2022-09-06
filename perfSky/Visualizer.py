@@ -251,9 +251,8 @@ class Vis:
         plt.show()
 
 
-    def plot_duration_alltraces(self, w_duration, output_path=None, show_plot=None): 
+    def plot_duration_traces(self, w_duration, output_path=None, show_plot=None):
         #TODO: Draw skylines
-        #TODO: Rename to plot_duration_traces
         traces_selection= w_duration[CASE_ID_COL].drop_duplicates().tolist()
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
@@ -354,10 +353,10 @@ class Vis:
 
         # Duration first N traces
         w_dur
-        self.plot_duration_alltraces(first_n_duration, output_path=output_path_st_duration, show_plot=show_plot)
+        self.plot_duration_traces(first_n_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
         # Duration all traces
         output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
-        self.plot_duration_alltraces(w_duration, output_path=output_path_duration, show_plot=show_plot)
+        self.plot_duration_traces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
         return snippet
