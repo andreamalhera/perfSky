@@ -105,8 +105,20 @@ def get_skyline_points(df):
     #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
     #get_skyline_points(first_case).head()
 
+#TODO: Implement. See Visualizer.run_plots()
+def get_average_skyline():
+    return
+
+#TODO: Implement. See Visualizer.run_plots()
+def get_skyline_average():
+    return
+
+#TODO: Implement. Probably already part of get_skyline_activity_set
+def get_activity_set():
+    return
+
+#TODO: Implement
 def get_skyline_activity_set(df):
-    #TODO: Implement
     all_by_activity = df.groupby('activity').size().reset_index(name='total_points_in_activity').sort_values(by=['total_points_in_activity'], ascending=False)
     skyline_by_activity = skyline_points.groupby('activity').size().reset_index(name='points_in_skyline').sort_values(by=['points_in_skyline'], ascending=False)
     r_by_activity = representative.groupby('activity').size().reset_index(name='cases_in_skyline').sort_values(by=['cases_in_skyline'], ascending=False)
