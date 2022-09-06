@@ -190,7 +190,7 @@ class Vis:
         plt.close(fig)
         return fig
 
-    def plot_all_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None, allen_point=None):
+    def plot_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None, allen_point=None):
         #TODO: Rename to plot_traces. Lookout for calls in notebooks.
         traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
         activity_list = snippet[ACTIVITY_ID_COL].drop_duplicates().tolist()
@@ -303,33 +303,33 @@ class Vis:
         # First N traces
         outputpath_seltr = output_path_prefix+'point_transformer_first'+str(LEN_SUBSET)+'Traces.png'
         subset = snippet[snippet[CASE_ID_COL].isin(snippet[CASE_ID_COL].unique()[:LEN_SUBSET])]
-        self.plot_all_traces(subset, output_path=outputpath_seltr, show_plot=show_plot)
+        self.plot_traces(subset, output_path=outputpath_seltr, show_plot=show_plot)
 
         # All traces
         output_path_atr = output_path_prefix+'point_transformer_allTraces.png'
-        self.plot_all_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
+        self.plot_traces(snippet, output_path=output_path_atr, show_plot=show_plot)
 
         # All skylines
         output_path_atr = output_path_prefix+'point_transformer_allTraces_skyline.png'
-        self.plot_all_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
+        self.plot_traces(snippet, output_path=output_path_atr, draw_skylines=1, show_plot=show_plot)
 
         # Average trace
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace.png'
         average_trace = get_average_trace(snippet).iloc[:]
         # TODO: Include header for avgtrace: header = 'Point transformer: Average trace for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
-        self.plot_all_traces(average_trace, output_path=output_path_avtr, show_plot=show_plot)
+        self.plot_traces(average_trace, output_path=output_path_avtr, show_plot=show_plot)
 
         # Average skyline
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
         # TODO: Include header for avgsky: header = 'Average skyline for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
-        self.plot_all_traces(average_trace, output_path=output_path_avtr,draw_skylines=1, show_plot=show_plot)
+        self.plot_traces(average_trace, output_path=output_path_avtr,draw_skylines=1, show_plot=show_plot)
 
         # Skyline average
         output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
         skyline_points = get_skyline_points(snippet)
         skyline_average = get_average_trace(skyline_points).iloc[:]
         # TODO: Include header for skyavg: header = 'Skyline average with '+ str(len(skyline_points[ACTIVITY_ID_COL].drop_duplicates().tolist()))+' activities over '+str(len(unique_trace)+' traces'
-        self.plot_all_traces(skyline_average, output_path=output_path_avtr, show_plot=show_plot)
+        self.plot_traces(skyline_average, output_path=output_path_avtr, show_plot=show_plot)
 
         # Skyline activity set
         #TODO: Implement
