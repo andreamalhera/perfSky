@@ -6,3 +6,5 @@ tests/data/daily/*.log
 miniconda3/*
 output/*
 *__pycache__*
+data/*
+*.ipynb_checkpoints/
