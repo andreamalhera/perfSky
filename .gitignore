@@ -1,10 +1,10 @@
-envvars.sh
-envvars.mk
-notebooks/.ipynb_checkpoints/
 *.egg-info/
-tests/data/daily/*.log
-miniconda3/*
-output/*
+*.ipynb_checkpoints/
 *__pycache__*
 data/*
-*.ipynb_checkpoints/
+envvars.mk
+envvars.sh
+miniconda3/*
+notebooks/.ipynb_checkpoints/
+output/*
+tests/data/daily/*.log
