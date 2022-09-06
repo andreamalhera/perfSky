@@ -17,18 +17,21 @@ CASE_ID_COL = "case"
 ACTIVITY_ID_COL = "activity"
 LEN_SUBSET = 3
 
+# TODO: TESTME: Write tests for this module. Current testing on notebooks/tuto.ipynb
 class Vis:
-# TODO: TESTME: Write tests for this module
 
+    #TODO: Move to a visualization utils module
     def get_color_from_label(label, color):
         return color
 
+    #TODO: Move to a visualization utils module
     def title_from_list(act_selection):
         result=''
         for act in act_selection:
             result+=act+'_'
         return result
 
+    #TODO: Move to a visualization utils module
     def plot_newline(self, p1, p2):
         ax = plt.gca()
         xmin, xmax = ax.get_xbound()
@@ -44,6 +47,7 @@ class Vis:
         ax.add_line(l)
         return l
 
+    #TODO: Move to a visualization utils module
     def draw_traces(self, data_selection, ax, draw_skylines=None):
         unique_trace = data_selection[CASE_ID_COL].unique().tolist()
         colormapt = cm.gist_ncar
@@ -60,6 +64,7 @@ class Vis:
             else:
                 ax.plot(current['num_start'], current['num_end'], label='trace '+k, zorder=0, color=c)
 
+    #TODO: Move to a visualization utils module
     def draw_allen_lines(self, allen_point, ax, yax, duration_plot=None):
                 x = allen_point['num_start'].values[0]
                 y = allen_point['num_end'].values[0]
@@ -75,6 +80,7 @@ class Vis:
                     ax.plot([0,x],[x,x],'k-', c='grey', linewidth=1, linestyle='--')
                     ax.plot([0,y],[y,y],'k-', c='grey', linewidth=1, linestyle='--')
 
+    #TODO: Move to a visualization utils module
     def plot_point_transformer(self, title, data_selection, activity=None, traces=None,  allen_point=None, size=None,
             duration_plot=None, draw_skylines=None, output_path=None, show_plot=None):
 
@@ -190,8 +196,8 @@ class Vis:
         plt.close(fig)
         return fig
 
+    #TODO: Include header as parameter for use as in run_plots()
     def plot_traces(self, snippet, output_path=None, draw_skylines=None, show_plot=None, allen_point=None):
-        #TODO: Rename to plot_traces. Lookout for calls in notebooks.
         traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
         activity_list = snippet[ACTIVITY_ID_COL].drop_duplicates().tolist()
         #print(point)
@@ -209,10 +215,10 @@ class Vis:
                     size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
         return figurept
 
+    #TODO: Add activity list selection as param
+    #TODO: Adapt frame dynamically
+    #TODO: Add start by zero option
     def plot_activities(self, snippet, output_path = None, show_plot = None):
-        #TODO: Add activity list selection as param
-        #TODO: Adapt frame dynamically
-        #TODO: Add start by zero option
         unique_act = snippet[ACTIVITY_ID_COL].unique().tolist()
         #print('There are ', len(unique_act), 'unique activities.')
         activity_selection=unique_act[0]
@@ -251,8 +257,8 @@ class Vis:
         plt.show()
 
 
+    #TODO: Draw skylines
     def plot_duration_traces(self, w_duration, output_path=None, show_plot=None):
-        #TODO: Draw skylines
         traces_selection= w_duration[CASE_ID_COL].drop_duplicates().tolist()
         if len(w_duration[w_duration['num_start']>0])>0:
             point = w_duration[w_duration['num_start']>0].sample(n=1)
@@ -265,8 +271,8 @@ class Vis:
             figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
+    #TODO: Move to experiments module and/or notebook
     def run_plots(self, subset, output_path_prefix, show_plot=None):
-        #TODO: Move to experiments module and/or notebook
         activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
         #filename_addition = title_from_list(activity_sel)
         filename_addition = ''
