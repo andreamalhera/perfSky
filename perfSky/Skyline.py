@@ -56,7 +56,7 @@ def get_relative_timestamps(df, exclude_tasks=[]):
 
 
 def get_average_trace(df):
-
+    #FIXME: Average End and start are only taking hours:minutes and not days into account
     def get_average_times(group):
 
         def avg_datetime(series):
