@@ -209,28 +209,7 @@ class Vis:
                     size=1 , draw_skylines=draw_skylines, output_path=output_path, show_plot=show_plot)
         return figurept
 
-    def plot_average_trace(self, snippet, output_path = None, draw_skylines=None, show_plot=None):
-        #TESTME
-        #FIXME: Average End and start are only taking hours:minutes and not days into account
-        #print(snippet['activity'].drop_duplicates().tolist())
-        data_selection = get_average_trace(snippet).iloc[:]
-        traces_selection = data_selection[CASE_ID_COL].drop_duplicates().tolist()
-        if len(data_selection[data_selection['num_start']>0])>0:
-            point = data_selection[data_selection['num_start']>0].sample(n=1)
-            #data_selection.iloc[ 1 , : ].to_frame().transpose()
-            #print(data_selection)
-            figurept = self.plot_point_transformer('Point transformer: Average trace from all activities, Allen\'s point: '
-                    +str(point[ACTIVITY_ID_COL].values)+' in '+str(point[CASE_ID_COL].values),
-                                            data_selection, traces=traces_selection, size=1, allen_point=point,
-                                            output_path=output_path, draw_skylines=draw_skylines, show_plot=show_plot)
-            #plot_point_transformer('Point transformer: Average trace from all activities', snippet, allen_point=point)
-        else:
-            figurept =self.plot_point_transformer('Point transformer: Average trace from all activities',
-                                            data_selection, traces=traces_selection, size=1, output_path=output_path,
-                                            draw_skylines=draw_skylines, show_plot=show_plot)
-        return figurept
-
-    def plot_selected_activities(self, snippet, output_path = None, show_plot = None):
+    def plot_activities(self, snippet, output_path = None, show_plot = None):
         #TODO: Add activity list selection as param
         #TODO: Adapt frame dynamically
         #TODO: Add start by zero option
@@ -336,26 +315,31 @@ class Vis:
 
         # Average trace
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace.png'
-        self.plot_average_trace(snippet, output_path=output_path_avtr, show_plot=show_plot)
+        average_trace = get_average_trace(snippet).iloc[:]
+        # TODO: Include header for avgtrace: header = 'Point transformer: Average trace for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
+        self.plot_all_traces(average_trace, output_path=output_path_avtr, show_plot=show_plot)
 
         # Average skyline
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
-        self.plot_average_trace(snippet, output_path=output_path_avtr, draw_skylines=1, show_plot=show_plot)
+        # TODO: Include header for avgsky: header = 'Average skyline for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
+        self.plot_all_traces(average_trace, output_path=output_path_avtr,draw_skylines=1, show_plot=show_plot)
 
         # Skyline average
         output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
         skyline_points = get_skyline_points(snippet)
-        self.plot_average_trace(skyline_points, output_path=output_path_avtr, show_plot=show_plot)
+        skyline_average = get_average_trace(skyline_points).iloc[:]
+        # TODO: Include header for skyavg: header = 'Skyline average with '+ str(len(skyline_points[ACTIVITY_ID_COL].drop_duplicates().tolist()))+' activities over '+str(len(unique_trace)+' traces'
+        self.plot_all_traces(skyline_average, output_path=output_path_avtr, show_plot=show_plot)
 
         # Skyline activity set
         #TODO: Implement
         output_path_sa = output_path_prefix+'point_transformer_skylineActSet.png'
-        sky_act_set = get_skyline_activity_set(snippet)
+        #sky_act_set = get_skyline_activity_set(snippet)
 
         # Only first activity
         #TODO: Select certain activity as param
         output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
-        self.plot_selected_activities(snippet, output_path=output_path_sa)
+        self.plot_activities(snippet, output_path=output_path_sa)
 
         w_duration = snippet.copy()
         w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1)#, show_plot=show_plot)
