@@ -281,7 +281,7 @@ class Vis:
             figurept = self.plot_point_transformer('Point transformer: All activities in all traces', w_duration, size=1, duration_plot=1,
                     traces=traces_selection, output_path=output_path, show_plot=show_plot)
 
-    def plot_all(self, subset, output_path_prefix, show_plot=None):
+    def run_plots(self, subset, output_path_prefix, show_plot=None):
         #TODO: Move to experiments module and/or notebook
         activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
         #filename_addition = title_from_list(activity_sel)
