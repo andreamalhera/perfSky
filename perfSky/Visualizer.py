@@ -11,7 +11,8 @@ import random
 
 from collections import OrderedDict
 from matplotlib.ticker import FuncFormatter
-from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points, get_skyline_activity_set
+from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points
+from perfSky.Skyline import get_skyline_activity_set, get_skyline_average, get_average_skyline
 
 CASE_ID_COL = "case"
 ACTIVITY_ID_COL = "activity"
@@ -48,6 +49,9 @@ class Vis:
         return l
 
     #TODO: Move to a visualization utils module
+    #TODO: Separate skyline computation from draw method while drawing skyline alongside dominated points. See difference in results below:
+    #   self.plot_traces(average_trace, output_path=output_path_avtr,draw_skylines=1, show_plot=show_plot) vs.
+    #   self.plot_traces(average_skyline, output_path=output_path_avtr, show_plot=show_plot), where average_skyline = get_average_skyline(snippet)
     def draw_traces(self, data_selection, ax, draw_skylines=None):
         unique_trace = data_selection[CASE_ID_COL].unique().tolist()
         colormapt = cm.gist_ncar
@@ -201,7 +205,7 @@ class Vis:
         traces_selection = snippet[CASE_ID_COL].drop_duplicates().tolist()
         activity_list = snippet[ACTIVITY_ID_COL].drop_duplicates().tolist()
         #print(point)
-        header = 'Point transformer: All '+str(len(activity_list))+' activities in all '+str(len(traces_selection))+' traces.'
+        header = 'All '+str(len(activity_list))+' activities in all '+str(len(traces_selection))+' traces.'
 
         if allen_point is not None and len(snippet[snippet['num_start']>0])>0:
             point = snippet[snippet['num_start']>0].sample(n=1)
@@ -223,7 +227,7 @@ class Vis:
         #print('There are ', len(unique_act), 'unique activities.')
         activity_selection=unique_act[0]
         #print(activity_selection)
-        figurept = self.plot_point_transformer('Point transformer: Activity \''+ str(activity_selection) + '\' only', snippet ,
+        figurept = self.plot_point_transformer('Activity \''+ str(activity_selection) + '\' only', snippet ,
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
@@ -311,13 +315,13 @@ class Vis:
 
         # Average skyline
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
+        average_skyline = get_average_skyline(snippet) # Currently not used. See TODO in draw_traces
         # TODO: Include header for avgsky: header = 'Average skyline for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
         self.plot_traces(average_trace, output_path=output_path_avtr,draw_skylines=1, show_plot=show_plot)
 
         # Skyline average
         output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
-        skyline_points = get_skyline_points(snippet)
-        skyline_average = get_average_trace(skyline_points).iloc[:]
+        skyline_average = get_skyline_average(snippet)
         # TODO: Include header for skyavg: header = 'Skyline average with '+ str(len(skyline_points[ACTIVITY_ID_COL].drop_duplicates().tolist()))+' activities over '+str(len(unique_trace)+' traces'
         self.plot_traces(skyline_average, output_path=output_path_avtr, show_plot=show_plot)
 

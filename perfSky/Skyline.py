@@ -105,13 +105,15 @@ def get_skyline_points(df):
     #first_case = snippet.loc[snippet['case']==snippet['case'][0]].reset_index()
     #get_skyline_points(first_case).head()
 
-#TODO: Implement. See Visualizer.run_plots()
-def get_average_skyline():
-    return
+def get_average_skyline(df):
+    average_trace = get_average_trace(df).iloc[:]
+    result = get_skyline_points(average_trace)
+    return result
 
-#TODO: Implement. See Visualizer.run_plots()
-def get_skyline_average():
-    return
+def get_skyline_average(df):
+    skyline_points = get_skyline_points(df)
+    result = get_average_trace(skyline_points).iloc[:]
+    return result
 
 #TODO: Implement. Probably already part of get_skyline_activity_set
 def get_activity_set():
