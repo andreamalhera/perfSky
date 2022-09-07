@@ -8,3 +8,4 @@ miniconda3/*
 notebooks/.ipynb_checkpoints/
 output/*
 tests/data/daily/*.log
+tests/data/plots/*.png

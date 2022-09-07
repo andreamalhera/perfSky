@@ -13,4 +13,10 @@ def test_run_preprocessing():
 
 def test_run_visualization():
     CSV_PATH = "tests/data/input_test_run_processmining/input.csv"
-    run_visualization(CSV_PATH)
+    OUTPUT_PATH = "./tests/data/plots/test"
+    run_visualization(CSV_PATH, OUTPUT_PATH)
+
+    dir_list = os.listdir(OUTPUT_PATH.rsplit('/',1)[0])
+
+    assert dir_list
+    assert len(dir_list)==10

@@ -6,7 +6,7 @@ from difflib import SequenceMatcher
 from perfSky.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 from perfSky.preprocessing.catter import run_catter as catter
 from perfSky.Skyline import get_relative_timestamps
-from perfSky import Visualizer as visualizer
+from perfSky import Visualizer
 from perfSky.Skyline import get_relative_timestamps
 
 # TODO: Move whole thing to self calling function so it can be tested
@@ -53,10 +53,10 @@ def run_preprocessing(luigi_log_path):
     print('Saved ', csv_path)
     return csv_path
 
-def run_visualization(csv_path):
-    event_log=pd.read_csv(csv_path, index_col=0)
-    event_log=get_relative_timestamps(event_log,['AllTasks'])#WIP
-
+def run_visualization(input_path, output_path):
+    event_log=pd.read_csv(input_path, index_col=0)
+    vis = Visualizer.Vis()
+    vis.run_plots(event_log, output_path_prefix=output_path)
 
 if __name__ == "__main__":
     start = datetime.datetime.now()
