@@ -223,9 +223,7 @@ class Vis:
     #TODO: Adapt frame dynamically
     #TODO: Add start by zero option
     def plot_activities(self, snippet, output_path = None, show_plot = None):
-        unique_act = snippet[ACTIVITY_ID_COL].unique().tolist()
-        #print('There are ', len(unique_act), 'unique activities.')
-        activity_selection=unique_act[0]
+        activity_selection = snippet[ACTIVITY_ID_COL].value_counts().index[0]
         #print(activity_selection)
         figurept = self.plot_point_transformer('Activity \''+ str(activity_selection) + '\' only', snippet ,
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
@@ -339,7 +337,7 @@ class Vis:
         sky_act_set = get_skyline_activity_set(snippet)
         self.plot_skyline_activity_set(sky_act_set, output_path = output_path_sa, show_plot=show_plot)
 
-        # Only first activity
+        # Activity with most events
         #TODO: Select certain activity as param
         output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
         self.plot_activities(snippet, output_path=output_path_sa, show_plot=show_plot)
