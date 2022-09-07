@@ -316,19 +316,19 @@ class Vis:
         # Average trace
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace.png'
         average_trace = get_average_trace(snippet).iloc[:]
-        # TODO: Include header for avgtrace: header = 'Point transformer: Average trace for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
+        #TODO: Include header for avgtrace: header = 'Average trace for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
         self.plot_traces(average_trace, output_path=output_path_avtr, show_plot=show_plot)
 
         # Average skyline
         output_path_avtr = output_path_prefix+'point_transformer_averageTrace_skyline'+'.png'
         average_skyline = get_average_skyline(snippet) # Currently not used. See TODO in draw_traces
-        # TODO: Include header for avgsky: header = 'Average skyline for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
+        #TODO: Include header for avgsky: header = 'Average skyline for '+ str(len(unique_act))+' activities over '+str(len(unique_trace)+' traces'
         self.plot_traces(average_trace, output_path=output_path_avtr,draw_skylines=1, show_plot=show_plot)
 
         # Skyline average
         output_path_avtr = output_path_prefix+'point_transformer_skylineAverage.png'
         skyline_average = get_skyline_average(snippet)
-        # TODO: Include header for skyavg: header = 'Skyline average with '+ str(len(skyline_points[ACTIVITY_ID_COL].drop_duplicates().tolist()))+' activities over '+str(len(unique_trace)+' traces'
+        #TODO: Include header for skyavg: header = 'Skyline average with '+ str(len(skyline_points[ACTIVITY_ID_COL].drop_duplicates().tolist()))+' activities over '+str(len(unique_trace)+' traces'
         self.plot_traces(skyline_average, output_path=output_path_avtr, show_plot=show_plot)
 
         # Skyline activity set
@@ -361,4 +361,4 @@ class Vis:
         output_path_duration = output_path_prefix+'point_transformer_duration_allTraces'+'.png'
         self.plot_duration_traces(w_duration, output_path=output_path_duration, show_plot=show_plot)
 
-        return snippet
+        return
