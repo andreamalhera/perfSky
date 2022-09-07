@@ -283,11 +283,9 @@ class Vis:
 
     #TODO: Move to experiments module and/or notebook
     def run_plots(self, subset, output_path_prefix, show_plot=None):
-        activity_sel = subset[ACTIVITY_ID_COL].apply(lambda row: row.split('(',1)[0]).unique().tolist()
-        #filename_addition = title_from_list(activity_sel)
         filename_addition = ''
         output_path_prefix += '_'+filename_addition
-        print('\nSubset of ', activity_sel, 'has:')
+        print('\nEvent log contains:')
         print(len(subset), ' entries')
 
         unique_act = subset[ACTIVITY_ID_COL].unique().tolist()
