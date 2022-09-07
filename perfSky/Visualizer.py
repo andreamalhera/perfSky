@@ -333,36 +333,21 @@ class Vis:
         # Only first activity
         #TODO: Select certain activity as param
         output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
-        self.plot_activities(snippet, output_path=output_path_sa)
+        self.plot_activities(snippet, output_path=output_path_sa, show_plot=show_plot)
 
         # Duration first N traces
+        output_path_st_duration = output_path_prefix+'point_transformer_duration_first'+str(LEN_SUBSET)+'Traces.png'
         w_duration = snippet.copy()
         w_duration['duration'] = w_duration.apply(lambda row: str(get_duration(str(row['start_time']),str(row['end_time']))), axis=1)#, show_plot=show_plot)
         w_duration['rel_end']=w_duration['duration']
         w_duration['t_duration']= w_duration.apply(lambda row: (get_duration(str(row['start_time']),str(row['end_time'])).total_seconds()), axis=1)#, show_plot=show_plot)
         w_duration['num_end']=w_duration['t_duration']
         w_duration = w_duration[[CASE_ID_COL,ACTIVITY_ID_COL,'rel_start','num_start', 'rel_end', 'num_end']]
-
         #print(w_duration.columns)
         #print(len(w_duration))
-
-        output_path_st_duration = output_path_prefix+'point_transformer_duration_first'+str(LEN_SUBSET)+'Traces.png'
         first_n_duration = w_duration[w_duration[CASE_ID_COL].isin(w_duration[CASE_ID_COL].drop_duplicates().tolist()[0:LEN_SUBSET])]
+
         # TODO: Include header for first N traces in duration plot: header = 'Duration plot for'+ str(len(first_n_duration[ACTIVITY_ID_COL].drop_duplicates().tolist()))+' activities in '+str(len(first_n_duration[CASE_ID_COL].drop_duplicates().tolist())+' traces'
-        self.plot_traces(skyline_average, output_path=output_path_avtr, show_plot=show_plot)
-
-        # Skyline activity set
-        #TODO: Implement
-        output_path_sa = output_path_prefix+'point_transformer_skylineActSet.png'
-        #sky_act_set = get_skyline_activity_set(snippet)
-
-        # Only first activity
-        #TODO: Select certain activity as param
-        output_path_sa = output_path_prefix+'point_transformer_selectedAct.png'
-        self.plot_activities(snippet, output_path=output_path_sa)
-
-        # Duration first N traces
-        w_dur
         self.plot_duration_traces(first_n_duration, output_path=output_path_st_duration, show_plot=show_plot)
 
         # Duration all traces
