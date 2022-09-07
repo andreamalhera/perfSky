@@ -115,12 +115,26 @@ def get_skyline_average(df):
     result = get_average_trace(skyline_points).iloc[:]
     return result
 
-#TODO: Implement. Probably already part of get_skyline_activity_set
-def get_activity_set():
-    return
-
-#TODO: Implement
 def get_skyline_activity_set(df):
+    """
+    Computes following stats for an event_log with start and end timestamps:
+        'activity': Unique 'activity' as in param df. E.g. 'CrawlTask'
+        'total_points_in_activity': Number of appearances of 'activity' in all cases. E.g. 5030
+        'points_in_skyline': Number of appearances of 'activity' in all skylines. Must be lower or equal to
+            'total_points_in_activity'. E.g. 123
+        'cases_in_skyline': Number of cases, where 'activity' appears in skyline. Must be lower or equal to
+            'points_in_skyline'. E.g. 5
+        'probability_activity_in_skyline': 'cases_in_skyline' divided by number of cases which contain 'activity'. Between 0 and 100% E.g. 100%
+
+    :param df: Dataframe including at least colimns:
+        'case': Indicating the case/trace where the activity happened. E.g. 'daily.2019-09-04_23-23-01'
+        'activity': Name for activity that happened in a case. E.g. 'CrawlTask'
+        'start_time': Indicating when an event (activity appearance) started in a particular case. E.g. '2019-09-05 01:13:08'
+        'end_time': Indicating when an event ended in a particular case. Must be same or later than 'start_time'
+            E.g. '2019-09-05 01:13:48'
+    """
+    skyline_points = get_skyline_points(df)
+    representative = skyline_points[['case','activity']].drop_duplicates()
     all_by_activity = df.groupby('activity').size().reset_index(name='total_points_in_activity').sort_values(by=['total_points_in_activity'], ascending=False)
     skyline_by_activity = skyline_points.groupby('activity').size().reset_index(name='points_in_skyline').sort_values(by=['points_in_skyline'], ascending=False)
     r_by_activity = representative.groupby('activity').size().reset_index(name='cases_in_skyline').sort_values(by=['cases_in_skyline'], ascending=False)
@@ -131,12 +145,12 @@ def get_skyline_activity_set(df):
     merged_by_activity = by_activity.merge(all_by_activity)[['activity','total_points_in_activity','points_in_skyline', 'cases_in_skyline']].sort_values(by=['total_points_in_activity'], ascending=False)
     #merged_by_activity['skyline_percentage'] = round(merged_by_activity.apply(lambda row: row['points_in_skyline']/row['total_points_in_activity']*100, axis=1),2)
 
-    total_diffferent_cases= len(subset['case'].unique())
+    total_diffferent_cases= len(df['case'].unique())
     total_points_in_skyline = merged_by_activity['points_in_skyline'].sum()
 
     merged_by_activity['probability_activity_in_skyline']=round(merged_by_activity.apply(lambda row: row['cases_in_skyline']/total_diffferent_cases*100, axis=1),2)
     #merged_by_activity['prob_skyline_appearance']=round(merged_by_activity.apply(lambda row: row['points_in_skyline']/(total_points_in_skyline/total_diffferent_cases)*100, axis=1),2)
-    print(len(merged_by_activity))
-    merged_by_activity = merged_by_activity.sort_values(by='probability_activity_in_skyline', ascending=False)
+    #print(len(merged_by_activity))
+    result = merged_by_activity.sort_values(by='probability_activity_in_skyline', ascending=False)
 
-    return merged_by_activity
+    return result

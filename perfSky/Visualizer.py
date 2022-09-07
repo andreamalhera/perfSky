@@ -231,7 +231,8 @@ class Vis:
                 activity=activity_selection, size=1, output_path=output_path, show_plot=show_plot)
         #print(snippet[snippet['activity']==activity_selection])
 
-    def plot_skyline_activity_set(merged_by_activity):
+    def plot_skyline_activity_set(self, merged_by_activity, output_path=None, show_plot = None):
+        header = 'Probability of '+ str(len(merged_by_activity))+' activities belonging to skyline'
         plt.rcdefaults()
         fig, ax = plt.subplots(figsize=(20, 20))
 
@@ -254,11 +255,18 @@ class Vis:
         ax.set_yticklabels(people)
         ax.invert_yaxis()  # labels read top-to-bottom
         ax.set_xlabel('Probability')
-        ax.set_title('Probability of activity belonging to skyline')
+        ax.set_title(header)
 
         #output_path = LUIGI_LOG_PATH+'/../../graphs/allDataAtOnce/daily.2019-0709_three_months_anomaly_probabilities_activity_set.png'
         #plt.savefig(output_path,  bbox_inches='tight')
-        plt.show()
+        if output_path:
+            print('Saving in ',output_path)
+            fig.savefig(output_path,  bbox_inches='tight')
+
+        if show_plot:
+            plt.show()
+        plt.close(fig)
+        return fig
 
 
     #TODO: Draw skylines
@@ -328,7 +336,8 @@ class Vis:
         # Skyline activity set
         #TODO: Implement
         output_path_sa = output_path_prefix+'point_transformer_skylineActSet.png'
-        #sky_act_set = get_skyline_activity_set(snippet)
+        sky_act_set = get_skyline_activity_set(snippet)
+        self.plot_skyline_activity_set(sky_act_set, output_path = output_path_sa, show_plot=show_plot)
 
         # Only first activity
         #TODO: Select certain activity as param
