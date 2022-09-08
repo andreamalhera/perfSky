@@ -29,6 +29,7 @@ This directory contains:
 Directories are divided into [master thesis content](master_thesis/), [jupyter notebooks](notebooks/), [tests](tests/), [data used for experiments](data/) and runable [code](perfSky/).
 The following notebooks can be found:
 - [tuto.ipynb](notebooks/tuto.ipynb): Presents an example for visualization.
+- [activity_clustering.ipynb](notebooks/activity_clustering.ipynb): Generates eventlog with clustered activity names to adjust for granularity as part of preprocessing.
 - [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection.
 
 The code is divided in three main modules, [preprocessing](perfSky/preprocessing), [skyline](perfSky/Skyline.py) and [Visualizer](perfSky/Visualizer.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
