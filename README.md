@@ -27,14 +27,11 @@ This directory contains:
 - [setup.py](): Specifies package out of this project
 
 Directories are divided into [master thesis content](master_thesis/), [jupyter notebooks](notebooks/), [tests](tests/), [data used for experiments](data/) and runable [code](perfSky/).
-The following notebooks contain prototypes of parts also implemented in the code: 
-- [boxplot.ipynb](notebooks/boxplot.ipynb)
-- [logsToCatts.ipynb](notebooks/logsToCatts.ipynb)
-- [toyExampleToCatts.ipynb](notebooks/toyExampleToCatts.ipynb)
-- [pointTransformer.ipynb](notebooks/pointTransformer.ipynb)
-- [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection 
+The following notebooks can be found:
+- [tuto.ipynb](notebooks/tuto.ipynb): Presents an example for visualization.
+- [performance_skyline_anomalies.ipynb](notebooks/performance_skyline_anomalies.ipynb): Used for experiments with the performance skyline  in new logs, specifically for anomaly detection.
 
-The code is divided in three main modules, [preprocessing](perfSky/preprocessing), [Skyline](perfSky/Skyline.py) and [Visualizer](perfSky/Visualizer.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
+The code is divided in three main modules, [preprocessing](perfSky/preprocessing), [skyline](perfSky/Skyline.py) and [Visualizer](perfSky/Visualizer.py). The first contains methods to convert '.log' files into '.csv' containing interval events, as explained in the [master's thesis](master_thesis/Performance_Skyline_Andrea_Maldonado.pdf).
 The plots module contains visualization methods to project traces from an interval events '.csv' into the process geometric representation. Skyline contains methods to compute the performance skyline and the average trace from a trace set.
 
 
