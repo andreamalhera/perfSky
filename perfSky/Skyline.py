@@ -2,8 +2,7 @@ import datetime
 import pandas as pd
 import time
 
-CASE_ID_COL = "case"
-ACTIVITY_ID_COL = "activity"
+from perfSky.config import CASE_ID_COL, ACTIVITY_ID_COL
 
 def get_duration(start_time, end_time):
     start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')

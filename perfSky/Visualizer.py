@@ -11,12 +11,10 @@ import random
 
 from collections import OrderedDict
 from matplotlib.ticker import FuncFormatter
+from perfSky.config import CASE_ID_COL, ACTIVITY_ID_COL, LEN_SUBSET
 from perfSky.Skyline import get_relative_timestamps, get_duration, get_average_trace, get_skyline_points
 from perfSky.Skyline import get_skyline_activity_set, get_skyline_average, get_average_skyline
 
-CASE_ID_COL = "case"
-ACTIVITY_ID_COL = "activity"
-LEN_SUBSET = 3
 
 # TODO: TESTME: Write tests for this module. Current testing on notebooks/tuto.ipynb
 class Vis:
