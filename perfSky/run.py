@@ -5,9 +5,8 @@ import pandas as pd
 from difflib import SequenceMatcher
 from perfSky.preprocessing.luigi_miner import run_luigi_log_miner as luigi_miner
 from perfSky.preprocessing.catter import run_catter as catter
-from perfSky.Skyline import get_relative_timestamps
 from perfSky import Visualizer
-from perfSky.Skyline import get_relative_timestamps
+from perfSky.skyline import get_relative_timestamps
 
 # TODO: Move whole thing to self calling function so it can be tested
 # TODO: Visualize process as in boxplot notebook

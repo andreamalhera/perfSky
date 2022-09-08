@@ -1,4 +1,4 @@
-from perfSky.Skyline import get_relative_timestamps
+from perfSky.skyline import get_relative_timestamps
 import pandas as pd
 
 # TODO: Move this path to a config file
