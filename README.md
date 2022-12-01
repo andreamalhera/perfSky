@@ -12,7 +12,7 @@ anomalies into multiple categories.
 
 If you'd like to learn more about how it works, see References below.
 
-Brought to you by [Andrea Maldonado](andreamalher.works@gmail.com)
+Brought to you by [Andrea Maldonado](mailto:andreamalher.works@gmail.com)
 
 ## Presentation slides, paper and master thesis:
 * [Performance Skyline Presentation](master_thesis/slides_inferring_process_performance_models_from_interval_events_using_the_performance_skyline.pdf)
