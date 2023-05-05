@@ -47,7 +47,7 @@ conda activate py39
 
 #install requirements
 pip install .
-jupyter lab --port=9000 # To tunnel to local machine add: --no-browser &
+jupyter notebook --port=9000 # To tunnel to local machine add: --no-browser &
 
 # In local machine (only in case you are tunneling): 
 ssh -N -f -L 8888:localhost:9003 <user@remote_machine.com>
