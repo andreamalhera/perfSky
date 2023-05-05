@@ -50,7 +50,7 @@ pip install .
 jupyter notebook --port=9000 # To tunnel to local machine add: --no-browser &
 
 # In local machine (only in case you are tunneling): 
-ssh -N -f -L 8888:localhost:9003 <user@remote_machine.com>
+ssh -N -f -L 8888:localhost:9000 <user@remote_machine.com>
 ```
 
 ### Useful development commands ( stored in makefile ):
